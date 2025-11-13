@@ -924,7 +924,7 @@
                 return get_link_chapter()
             }
 
-            const lst_errors = ITEMS.filter((o) => o.status == STATUS_ERROR);
+            const lst_errors = ITEMS.filter((o) => o.status != STATUS_COMPLETE);
             lst_errors.forEach((item) => {
                 item.status = STATUS_PENDING;
                 item.images.forEach(o => {
