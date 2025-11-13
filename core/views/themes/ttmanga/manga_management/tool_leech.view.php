@@ -146,6 +146,8 @@
         let REFERER = localStorage.getItem(storageKeyReferer)
         let ITEMS = JSON.parse(localStorage.getItem(storageKeyItems) || "[]")
 
+        linkGet.val(localStorage.getItem(storageKeyLink) || '')
+
         const saveItems = () => {
             const current_items = JSON.parse(localStorage.getItem(storageKeyItems) || "[]");
             ITEMS.forEach(o => {
@@ -450,7 +452,9 @@
                     btnReupload.addClass('disabled')
                     btnRetry.removeClass('disabled')
                 } else {
-                    btnReupload.removeClass('disabled')
+                    if (!ITEMS.every(item => item.images.every(o => o.status == STATUS_COMPLETE))) {
+                        btnReupload.removeClass('disabled')
+                    }
                     btnRetry.addClass('disabled')
                 }
                 return;
@@ -497,7 +501,7 @@
 
             const CHAPTERS = ITEMS.filter((o) => o?.images?.some(o2 => o2.status == STATUS_PENDING));
             if (CHAPTERS.length < 1 || stopReupload) {
-                if (ITEMS.some((o) => o.status != STATUS_COMPLETE || !o?.images?.length || o.images.some(o2 => o2.status != STATUS_COMPLETE))) {
+                if (!ITEMS.every((o) => o?.images?.every(o2 => o2.status == STATUS_COMPLETE))) {
                     btnRetry.removeClass("disabled");
                     btnSave.addClass("disabled");
                 } else {
@@ -714,7 +718,7 @@
 				selectedLink.push($(this).val())
 			});
 
-            ITEMS = ITEMS.filter(item => selectedLink.some(o => selectedLink.includes(item.link))).reverse()
+            ITEMS = ITEMS.filter(item => selectedLink.some(o => o.includes(item.link))).reverse()
 
             ITEMS.map(o => {
                 o.status = o?.images?.length ? STATUS_COMPLETE : STATUS_PENDING
@@ -725,6 +729,13 @@
             btnSelectChapter.addClass('disabled')
 
             stopGetlink = false
+            if (ITEMS.every(item => item?.images?.every(o => o.status == STATUS_COMPLETE))) {
+                btnSave.removeClass('disabled')
+                btnRetry.add('disabled')
+                btnReupload.add('disabled')
+                btnStop.add('disabled')
+                ITEMS = ITEMS.map(o => ({...o, status: STATUS_COMPLETE}))
+            }
             get_link_chapter()
         })
 
