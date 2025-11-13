@@ -1,0 +1,92 @@
+/* the loai */
+.genre-list {
+  display: -ms-grid;
+  display: grid;
+  grid-gap: 6px;
+  -ms-grid-columns: minmax(160px, 1fr) [auto-fit];
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  -ms-grid-rows: auto;
+  grid-template-rows: auto;
+  margin: 20px 0;
+  flex: 1;
+}
+.genre-list .state-btn {
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 5px 10px 5px 30px;
+  background: #f1f3f4;
+  text-align: left;
+  color: #333;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.genre-list .state-btn label {
+  display: block;
+  cursor: pointer;
+  font-weight: unset;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  user-select: none;
+}
+.genre-list .state-btn select,
+.genre-list .state-btn input {
+  display: none;
+}
+.genre-list .state-btn::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  float: left;
+  width: 15px;
+  height: 15px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  background: #fff;
+}
+.genre-list .state-btn.include {
+  color: #f2f2f2;
+  background-color: #8bc34a;
+}
+.genre-list .state-btn.include::after {
+  content: "\f00c";
+  font-family: "Font Awesome 5 Pro";
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  float: left;
+  width: 15px;
+  height: 15px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  background: #fff;
+  color: #00a65a;
+  font-weight: 600;
+  text-align: center;
+}
+.genre-list .state-btn.exclude {
+  background: #dd4b39;
+  color: #f2f2f2;
+}
+.genre-list .state-btn.exclude::after {
+  content: "\f00d";
+  font-family: "Font Awesome 5 Pro";
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  float: left;
+  width: 15px;
+  height: 15px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  background: #fff;
+  color: #dd4b39;
+  font-weight: 600;
+  text-align: center;
+}
+
+/*# sourceMappingURL=genre.css.map */

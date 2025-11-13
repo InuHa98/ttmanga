@@ -1,0 +1,28 @@
+@use 'sass:string';
+
+@mixin prefix($content, $prefixes: "webkit" "ms") {
+    @each $key, $value in $content {
+        @if type-of($value) == string {
+            $value: string.unquote($value);
+        }
+
+        @each $prefix in $prefixes {
+            #{"-" + $prefix + "-" + $key}: $value;
+        }
+        #{$key}: $value;
+    }
+}
+
+@mixin responsive-max($size) {
+    $size: $size + 0px;
+    @media screen and (max-width: $size) {
+        @content;
+    }
+}
+
+@mixin responsive-min($size) {
+    $size: $size + 0px;
+    @media screen and (min-width: $size) {
+        @content;
+    }
+}

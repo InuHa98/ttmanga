@@ -1,0 +1,396 @@
+.disable-scroll {
+  overflow: hidden;
+}
+
+.dialog-background {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 990;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.dialog-section {
+  display: none;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 999;
+  padding: 0;
+  margin: 0px;
+  width: auto;
+  max-width: 100%;
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  background: #fff;
+}
+.dialog-header {
+  position: relative;
+  width: auto;
+  padding: 0 40px 0 16px;
+  margin: 0;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 1rem;
+  line-height: 46px;
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  background-color: #fff;
+  color: #333;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-radius: 10px 10px 0 0;
+}
+
+.dialog-header + .dialog-body {
+  padding-top: 1rem;
+}
+
+.dialog-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  position: relative;
+  padding: 2rem;
+  padding-bottom: 0;
+  margin: 0;
+  background-color: #fff;
+  border-radius: 0 0 10px 10px;
+}
+.dialog-content {
+  position: relative;
+  width: 100%;
+  overflow-y: auto;
+}
+.dialog-footer {
+  padding: 20px 30px 10px;
+  text-align: right;
+  margin-top: auto;
+  border-radius: 0 0 10px 10px;
+}
+
+.dialog-confirm,
+.dialog-cancel {
+  display: inline-block;
+  padding: 6px 30px;
+  border-radius: 10px;
+  min-width: 100px;
+  min-height: 40px;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+.dialog-confirm {
+  border: none;
+  background-color: #2c2c2c;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+}
+.dialog-confirm:hover {
+  background-color: #565656;
+}
+.dialog-cancel {
+  margin-left: 10px;
+  border: 1px solid #ddd;
+  color: #666;
+  text-align: center;
+  text-decoration: none;
+}
+.dialog-cancel:hover {
+  background-color: #d9d9d9;
+  border: 1px solid #cbcbcb;
+}
+
+.dialog-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: block;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.6rem;
+  color: #333;
+  opacity: 0.5;
+  outline: none;
+  padding: 0 0 0 10px;
+  -webkit-transition: visibility 0s ease 0s, opacity 0.2s linear 0s;
+  -o-transition: visibility 0s ease 0s, opacity 0.2s linear 0s;
+  transition: visibility 0s ease 0s, opacity 0.2s linear 0s;
+}
+.dialog-close:hover {
+  opacity: 1;
+}
+
+.dialog-toast-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin-top: 10px;
+  margin-right: 10px;
+  z-index: 9999;
+}
+.dialog-toast-close {
+  font-weight: 600;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #333;
+  outline: none;
+  padding: 0 0 0 10px;
+  -webkit-transition: visibility 0s ease 0s, opacity 0.2s linear 0s;
+  -o-transition: visibility 0s ease 0s, opacity 0.2s linear 0s;
+  transition: visibility 0s ease 0s, opacity 0.2s linear 0s;
+}
+
+.dialog-toast-close:hover {
+  opacity: 1;
+}
+
+.dialog-toast-default,
+.dialog-toast-success,
+.dialog-toast-warning,
+.dialog-toast-error,
+.dialog-toast-info {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 10px;
+  max-width: 600px;
+  min-width: 280px;
+  padding: 8px 10px 8px 15px;
+  background: #fff;
+  color: #333;
+  border-radius: 5px;
+  overflow: hidden;
+  pointer-events: auto;
+  -webkit-transform: translateZ(0px);
+  transform: translateZ(0px);
+  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 1px 10px 0,
+    rgba(0, 0, 0, 0.05) 0 2px 15px 0;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 1px 10px 0, rgba(0, 0, 0, 0.05) 0 2px 15px 0;
+  border-left: 5px solid;
+}
+.dialog-toast-default {
+  color: rgba(73, 73, 73, 0.95);
+}
+.dialog-toast-success {
+  color: #76ad37;
+}
+.dialog-toast-warning {
+  color: #ff9800;
+}
+.dialog-toast-error {
+  color: #e91e63;
+}
+.dialog-toast-info {
+  color: #00bcd4;
+}
+
+.dialog-toast-enter,
+.dialog-toast-leave {
+  -webkit-transition-property: opacity, -webkit-transform;
+  transition-property: opacity, -webkit-transform;
+  -o-transition-property: transform, opacity;
+  transition-property: transform, opacity;
+  transition-property: transform, opacity, -webkit-transform;
+  -webkit-animation-duration: 750ms;
+  animation-duration: 750ms;
+  -webkit-animation-delay: 0ms;
+  animation-delay: 0ms;
+}
+.dialog-toast-leave {
+  -webkit-animation-name: bounceOutRight;
+  animation-name: bounceOutRight;
+}
+
+.dialog-toast-enter {
+  -webkit-animation-name: bounceInRight;
+  animation-name: bounceInRight;
+}
+
+.dialog-toast-timeout {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  z-index: 10000;
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-transform-origin: left;
+  -ms-transform-origin: left;
+  transform-origin: left;
+  -webkit-animation: scale-x-frames linear 1 forwards;
+  animation: scale-x-frames linear 1 forwards;
+}
+
+.dialog-message {
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+}
+
+.dialog-label {
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.dialog-desc {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+@-webkit-keyframes scale-x-frames {
+  0% {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+
+  to {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+  }
+}
+
+@keyframes scale-x-frames {
+  0% {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+
+  to {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+  }
+}
+
+@-webkit-keyframes bounceInRight {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(3000px, 0, 0);
+    transform: translate3d(3000px, 0, 0);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(-25px, 0, 0);
+    transform: translate3d(-25px, 0, 0);
+  }
+
+  75% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+
+  90% {
+    -webkit-transform: translate3d(-5px, 0, 0);
+    transform: translate3d(-5px, 0, 0);
+  }
+
+  to {
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes bounceInRight {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(3000px, 0, 0);
+    transform: translate3d(3000px, 0, 0);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: translate3d(-25px, 0, 0);
+    transform: translate3d(-25px, 0, 0);
+  }
+
+  75% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+
+  90% {
+    -webkit-transform: translate3d(-5px, 0, 0);
+    transform: translate3d(-5px, 0, 0);
+  }
+
+  to {
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@-webkit-keyframes bounceOutRight {
+  40% {
+    opacity: 1;
+    -webkit-transform: translate3d(-20px, 0, 0);
+    transform: translate3d(-20px, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(1000px, 0, 0);
+    transform: translate3d(1000px, 0, 0);
+  }
+}
+
+@keyframes bounceOutRight {
+  40% {
+    opacity: 1;
+    -webkit-transform: translate3d(-20px, 0, 0);
+    transform: translate3d(-20px, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(1000px, 0, 0);
+    transform: translate3d(1000px, 0, 0);
+  }
+}

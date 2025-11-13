@@ -1,0 +1,368 @@
+@use "sass:selector";
+
+@use "variables" as *;
+@use "mixins" as *;
+
+$cover-height: 240px;
+$avatar-size: 168px;
+
+.section-profile-cover {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  background-color: #2a2a2a;
+  background-image: repeating-linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px,
+      transparent 60px
+    ),
+    repeating-linear-gradient(
+      60deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px,
+      transparent 60px
+    ),
+    linear-gradient(
+      60deg,
+      rgba(0, 0, 0, 0.1) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgba(0, 0, 0, 0.1) 75%,
+      rgba(0, 0, 0, 0.1)
+    ),
+    linear-gradient(
+      120deg,
+      rgba(0, 0, 0, 0.1) 25%,
+      transparent 25%,
+      transparent 75%,
+      rgba(0, 0, 0, 0.1) 75%,
+      rgba(0, 0, 0, 0.1)
+    );
+  background-size: 70px 120px;
+  padding-top: 60px;
+  height: $cover-height;
+
+  &__bg-cover {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    background-position: 50% 20%;
+    background-size: cover;
+  }
+
+  &__bg-alpha {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    background-position: 50%;
+    background: #111;
+    opacity: 0.5;
+  }
+
+  .container {
+    height: 100%;
+    padding-top: 10px;
+    padding-left: 180px;
+    display: block;
+    position: relative;
+    color: #fff;
+    z-index: 1;
+
+    &__cover-btn-change {
+      position: absolute;
+      min-width: 40px;
+      min-height: 40px;
+      padding: 10px 14px;
+      color: #333;
+      background: #fff;
+      text-align: center;
+      box-shadow: none;
+      cursor: pointer;
+      right: 10px;
+      bottom: 15px;
+      border-radius: 50px;
+      opacity: 0.6;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      @include responsive-max(320px) {
+        & {
+          span.text {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.side-nav-main {
+  @include responsive-max(768px) {
+    & {
+      padding-top: $section-header-height;
+    }
+  }
+}
+
+.section-profile-infomation {
+  position: relative;
+  display: block;
+  background: #f1f3f4;
+  //border-bottom: solid 1px $border-color;
+  padding: 0 10px;
+
+  .container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: auto;
+
+    .user-avatar::before {
+      border-radius: 50%;
+      font-size: 5rem;
+    }
+
+    &__avatar-btn-change {
+      position: absolute;
+      padding: 10px;
+      color: #333;
+      background: #fff;
+      text-align: center;
+      box-shadow: rgb(0 0 0 / 20%) 0px 0px 4px;
+      cursor: pointer;
+      right: 5px;
+      bottom: 8px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      line-height: 1.2rem;
+      z-index: 1;
+
+      &:hover {
+        background: #f3f3f3;
+        opacity: 1;
+      }
+    }
+  }
+
+  &__avatar {
+    position: absolute;
+    display: inline-block;
+    top: -100px;
+    border-radius: 50%;
+    border: 5px solid #f1f3f4;
+    background: #f1f3f4;
+    width: $avatar-size;
+    height: $avatar-size;
+    overflow: visible;
+    z-index: 1;
+
+    img {
+      max-width: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #f1f1f1;
+      box-shadow: rgb(0 0 0 / 10%) 0px 2px 4px;
+    }
+    span {
+      font-size: 6rem;
+      border-radius: 50%;
+    }
+  }
+
+  &__info {
+    margin-left: $avatar-size;
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    position: relative;
+    height: 100%;
+
+    &-left {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 0 15px;
+      word-break: break-all;
+      .name-box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-flow: wrap;
+        .display-name {
+          color: #201950;
+          font-size: 1.6rem;
+          font-weight: 600;
+          padding: 0 5px;
+          margin-bottom: 5px;
+          word-break: break-word;
+        }
+      }
+
+      @include responsive-max(425px) {
+        & {
+          padding: 0;
+        }
+      }
+    }
+
+    &-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-left: auto;
+
+      %btn {
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 50px;
+        white-space: nowrap;
+        color: #fff;
+        box-shadow: rgb(0 0 0 / 10%) 0px 2px 4px;
+      }
+      .send-message {
+        @extend %btn;
+        background: #70769e;
+        &:hover {
+          background: darken(#70769e, 10%);
+        }
+        @include responsive-max(425px) {
+          & {
+            border-radius: 10px;
+            span {
+              display: none;
+            }
+          }
+        }
+      }
+      .save-upload {
+        @extend %btn;
+        display: none;
+        background: $color-info;
+        &:hover {
+          background: lighten($color-info, 10%);
+        }
+      }
+    }
+
+    @include responsive-max(425px) {
+      & {
+        &-left {
+          margin-top: 30px;
+          .name-box {
+            justify-content: center;
+          }
+        }
+        &-right {
+          min-height: 35px;
+        }
+        flex-direction: column-reverse;
+        margin: 0 {
+          left: 10px;
+        }
+      }
+    }
+  }
+}
+
+.username {
+  font-size: 1rem;
+  margin-bottom: 5px;
+  background: #f1f3f4;
+  color: #111;
+  text-align: center;
+  padding: 5px 18px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.user-role {
+  @include responsive-max(425px) {
+    & {
+      display: block;
+      padding: 5px 10px;
+    }
+  }
+}
+
+.auth-session {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: none;
+  background: #fff;
+  margin-bottom: 10px;
+
+  &__icon {
+    text-align: center;
+    font-size: 1.8rem;
+    max-width: 50px;
+    color: #666f8b;
+  }
+
+  &__device {
+    &-browser {
+      color: #666f8b;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    &-os {
+      color: #c5c5c5;
+      .current-device {
+        color: $primary-color;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.user-statistic {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e3e3e3;
+  &__item {
+    text-align: left;
+    padding: {
+      left: 10px;
+      right: 10px;
+    }
+    &:last-child {
+      padding-bottom: 10px;
+    }
+    &-title {
+      display: inline-block;
+      font-size: 1rem;
+      margin-bottom: 3px;
+      background: #b7bac6;
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 50px;
+    }
+    &-desc {
+      display: inline-block;
+      font-weight: bold;
+      opacity: 0.9;
+    }
+  }
+}
+
+.user-bio {
+  border-top: 1px solid #e3e3e3;
+  padding-top: 10px;
+  margin-top: 10px;
+  text-align: center;
+  opacity: 0.8;
+}

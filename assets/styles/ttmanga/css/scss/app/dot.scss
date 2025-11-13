@@ -1,0 +1,25 @@
+.dot {
+    display: block;
+    position: relative;
+    padding-left: 20px;
+    color: #8d8d9d;
+    white-space: nowrap;
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #f1f3f5;
+        position: absolute;
+        left: 0;
+        top: 2px;
+    }
+
+    &.dot-success::before {
+        background: #cddc39;
+    }
+    &.dot-gray::before {
+        background: #e4e6e9;
+    }
+}

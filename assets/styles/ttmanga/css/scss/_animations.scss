@@ -1,0 +1,240 @@
+.animation-spinner {
+  color: official;
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+
+  div {
+    transform-origin: 15px 15px;
+    animation: animation-spinner 1.2s linear infinite;
+    &::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 4px;
+      left: 11px;
+      width: 2px;
+      height: 6px;
+      border-radius: 20%;
+      background: #000;
+    }
+    &:nth-child(1) {
+      transform: rotate(0deg);
+      animation-delay: -1.1s;
+    }
+    &:nth-child(2) {
+      transform: rotate(30deg);
+      animation-delay: -1s;
+    }
+    &:nth-child(3) {
+      transform: rotate(60deg);
+      animation-delay: -0.9s;
+    }
+    &:nth-child(4) {
+      transform: rotate(90deg);
+      animation-delay: -0.8s;
+    }
+    &:nth-child(5) {
+      transform: rotate(120deg);
+      animation-delay: -0.7s;
+    }
+    &:nth-child(6) {
+      transform: rotate(150deg);
+      animation-delay: -0.6s;
+    }
+    &:nth-child(7) {
+      transform: rotate(180deg);
+      animation-delay: -0.5s;
+    }
+    &:nth-child(8) {
+      transform: rotate(210deg);
+      animation-delay: -0.4s;
+    }
+    &:nth-child(9) {
+      transform: rotate(240deg);
+      animation-delay: -0.3s;
+    }
+    &:nth-child(10) {
+      transform: rotate(270deg);
+      animation-delay: -0.2s;
+    }
+    &:nth-child(11) {
+      transform: rotate(300deg);
+      animation-delay: -0.1s;
+    }
+    &:nth-child(12) {
+      transform: rotate(330deg);
+      animation-delay: 0s;
+    }
+  }
+}
+@keyframes animation-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.progress-bar {
+  background: linear-gradient(
+    135deg,
+    #000000 25%,
+    #cddc39 25%,
+    #cddc39 50%,
+    #000000 50%,
+    #000000 75%,
+    #cddc39 75%
+  );
+  display: block;
+  height: 14px;
+  line-height: 14px;
+  color: #fff;
+  border-radius: 50px;
+  background-size: 50px 50px;
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%);
+  animation: progress-bar 3s linear infinite;
+  border: 1px solid #cddc39;
+}
+
+@-webkit-keyframes progress-bar {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+.animation-loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  position: relative;
+  background: #f1f3f4;
+  border: 1px solid #cddc39;
+  padding: 2px;
+  div {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    background: #dedede;
+    animation: animation-loading 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+    &:nth-child(1) {
+      animation-delay: -0.48s;
+    }
+    &:nth-child(2) {
+      animation-delay: -0.36s;
+    }
+    &:nth-child(3) {
+      animation-delay: -0.24s;
+    }
+    &:nth-child(4) {
+      animation-delay: -0.12s;
+    }
+    &:nth-child(5) {
+      animation-delay: 0;
+    }
+  }
+}
+
+@keyframes animation-loading {
+  0% {
+    background: $color-green;
+  }
+  90%,
+  100% {
+    background: #dedede;
+  }
+}
+
+.loader {
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  animation: mulShdSpin 1.1s infinite ease;
+  transform: translateZ(0);
+}
+@keyframes mulShdSpin {
+  0%,
+  100% {
+    box-shadow: 0em -2.6em 0em 0em #ffffff,
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
+      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
+      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
+      -2.6em 0em 0 0em rgba(255, 255, 255, 0.5),
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7);
+  }
+  12.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.7),
+      1.8em -1.8em 0 0em #ffffff, 2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
+      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
+      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5);
+  }
+  25% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.5),
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7), 2.5em 0em 0 0em #ffffff,
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
+      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
+      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  }
+  37.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5),
+      2.5em 0em 0 0em rgba(255, 255, 255, 0.7), 1.75em 1.75em 0 0em #ffffff,
+      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
+      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
+      2.5em 0em 0 0em rgba(255, 255, 255, 0.5),
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.7), 0em 2.5em 0 0em #ffffff,
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
+      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  }
+  62.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
+      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.5),
+      0em 2.5em 0 0em rgba(255, 255, 255, 0.7), -1.8em 1.8em 0 0em #ffffff,
+      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  }
+  75% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
+      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
+      0em 2.5em 0 0em rgba(255, 255, 255, 0.5),
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.7), -2.6em 0em 0 0em #ffffff,
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  }
+  87.5% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
+      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
+      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.5),
+      -2.6em 0em 0 0em rgba(255, 255, 255, 0.7), -1.8em -1.8em 0 0em #ffffff;
+  }
+}

@@ -1,0 +1,204 @@
+.js-custom-select {
+  &--hidden {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    -webkit-clip-path: inset(50%) !important;
+    clip-path: inset(50%) !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+    white-space: nowrap !important;
+  }
+}
+
+.js-custom-select__container {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  min-height: 36px;
+  width: 100%;
+  background-color: #f5f5f5;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: none;
+  border: 1px solid #f1f3f4;
+  cursor: pointer;
+  overflow: hidden;
+
+  &:hover {
+    border: 1px solid #b4bdd3;
+    box-shadow: 0 0 0 3px rgba(133, 79, 255, 0.1);
+  }
+  & ~ & {
+    margin-left: 10px;
+  }
+  &.show {
+  }
+
+  &-title {
+    @extend %no-select;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 14px {
+      right: 0;
+    }
+
+    &.show-placeholder {
+      color: var(--color-placeholder);
+      padding-left: 10px;
+      padding-right: 10px;
+      &::after,
+      &::before {
+        content: " -- ";
+      }
+    }
+
+    .js-custom-select-multiple__ul {
+      display: inline-flex;
+      align-items: center;
+      flex-flow: wrap;
+      max-width: 100%;
+
+      .js-custom-select-multiple__li {
+        display: flex;
+        align-items: center;
+        background-color: #c8c8d5;
+        border-radius: 10px;
+        cursor: default;
+        line-height: 1.5rem;
+        margin: 0.1875rem 0.1875rem;
+        padding: 0 0.8rem {
+          left: 0;
+        }
+        min-height: 24px;
+        max-width: 100%;
+
+        i {
+          padding: 0.6rem 0.8rem;
+          cursor: pointer;
+          font-size: 0.8rem;
+        }
+        span:nth-child(2) {
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+
+  &-arrow {
+    padding: 0 12px;
+    font-size: 0.8rem;
+  }
+
+  &-title--multiple {
+    padding: 0 {
+      left: 4px;
+    }
+  }
+}
+
+.js-custom-option__container {
+  @extend %custom-scroll;
+  max-height: 300px;
+  overflow: auto;
+  background: #fff;
+  display: block;
+  position: absolute;
+  padding: 6px;
+  border: 1px solid #f1f3f4;
+  border-radius: 5px;
+  box-shadow: rgba(67, 86, 101, 0.3) 0 1px 2px 0,
+    rgba(56, 89, 113, 0.15) 0 2px 6px 2px;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+  -webkit-transition: transform 0.1s ease-in-out, opacity 0.2s ease-in-out;
+  transition: transform 0.1s ease-in-out, opacity 0.2s ease-in-out;
+  opacity: 0;
+  z-index: 99999;
+  &--empty {
+    text-align: center;
+    padding: 8px;
+    color: #62788f;
+  }
+  .js-custom-search {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    background: #f1f3f4;
+    border: 1px solid #f1f3f4;
+    margin: 2px 2px 10px;
+    border-radius: 10px;
+    .icon {
+      color: #d3d9e0;
+    }
+    input {
+      padding-left: 8px;
+      padding-right: 0;
+      width: 100%;
+      background: #f1f3f4;
+    }
+  }
+
+  ul {
+    li {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #333;
+      &.selected {
+        background-color: $primary-color;
+        color: #fff;
+      }
+      &:hover:not(.selected) {
+        background-color: #f1f3f4;
+        color: #333;
+      }
+      + li {
+        margin-top: 5px;
+      }
+    }
+  }
+}
+
+.js-custom-option__placeholder {
+  color: var(--color-placeholder);
+  padding-left: 10px;
+  padding-right: 10px;
+  background: none !important;
+  cursor: auto !important;
+  pointer-events: none;
+  user-select: none;
+  &::after,
+  &::before {
+    content: " -- ";
+  }
+}
+
+.js-custom-option__ul {
+  &--center {
+    li {
+      text-align: center;
+    }
+  }
+
+  &--left {
+    li {
+      text-align: left;
+    }
+  }
+
+  &--right {
+    li {
+      text-align: right;
+    }
+  }
+}

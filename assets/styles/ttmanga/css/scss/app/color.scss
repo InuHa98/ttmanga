@@ -1,0 +1,17 @@
+.text {
+  &-primary {
+    color: $primary-color !important;
+  }
+  &-success {
+    color: #8bc34a !important;
+  }
+  &-danger {
+    color: #e91e63 !important;
+  }
+  &-warning {
+    color: #ff9800 !important;
+  }
+  &-info {
+    color: #3a87ad !important;
+  }
+}

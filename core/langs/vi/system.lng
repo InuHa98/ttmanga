@@ -1,0 +1,20 @@
+[system]
+sex_unknown = "Không xác định"
+sex_male = "Nam"
+sex_female = "Nữ"
+default_error = "Có lỗi xảy ra. Vui lòng thử lại sau ít phút!"
+error_invalid_image_format = "Lỗi: Định dạng hỉnh ảnh không hợp lệ."
+success_create = "Tạo mới thành công"
+success_save = "Lưu lại thành công"
+success_delete = "Xoá thành công"
+success_update = "Câp nhật thành công"
+error_create = "Tạo mới thất bại"
+error_save = "Lưu thất bại"
+error_delete = "Xoá thất bại"
+error_update = "Cập nhật thất bại"
+
+[error_404]
+title = "404 - Page not found"
+text = "Opps! Trang không tồn tại"
+desc = "Trang bạn đang tìm kiếm có thể đã bị xóa, thay đổi hoặc tạm thời không có sẵn."
+button = "Trở lại trang chủ"

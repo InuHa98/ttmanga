@@ -1,0 +1,18 @@
+@use 'sass:selector';
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.mailer-panel {
+    display: none;
+    margin-top: 1.5rem;
+    &.show {
+        display: block;
+    }
+}
+.teams-used, .role-perm {
+    background: #e5e5e5;
+    padding: 5px 18px;
+    color: #838383;
+    border-radius: 50px;
+}

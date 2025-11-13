@@ -1,0 +1,115 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+html,
+body {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+a {
+  color: #551a88;
+  text-decoration: none;
+}
+
+.background {
+  background: url("images/bg-404.jpg") no-repeat center center;
+  background-size: cover;
+}
+.background::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: rgba(250, 250, 250, 0.6);
+  background-repeat: no-repeat;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.container {
+  max-width: 550px;
+  width: 100%;
+  padding: 10px;
+  margin-top: -100px;
+}
+
+.logo {
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  opacity: 0.75;
+  max-width: 100%;
+}
+
+.box {
+  width: 100%;
+  padding: 4rem;
+  border-radius: 5px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 6rem;
+  color: #333;
+}
+
+h1 span {
+  color: #e91e63;
+}
+
+.title {
+  text-align: center;
+  color: #333;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.desc {
+  text-align: center;
+  color: #4c4c4c;
+  margin: 1rem auto;
+  font-size: 0.9rem;
+}
+
+.button {
+  color: #810077;
+  background: #ebf1f5;
+  padding: 1rem;
+  border-radius: 50px;
+  border: 2px solid #e91e63;
+  margin-top: 20px;
+  display: block;
+  text-align: center;
+}
+
+.button:hover {
+  background: #e91e63;
+  color: #fff;
+  border-color: #d1d1d1;
+}
+
+@media screen and (max-width: 767px) {
+  .box h1 {
+    font-size: 4rem;
+  }
+  .box .title {
+    font-size: 1rem;
+  }
+  .box .desc {
+    font-size: 0.8rem;
+  }
+  .container .box {
+    padding: 4rem 2rem;
+  }
+}
+
+/*# sourceMappingURL=error_404.css.map */

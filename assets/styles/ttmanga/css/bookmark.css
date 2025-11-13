@@ -1,0 +1,205 @@
+.bookmark-type {
+  display: flex;
+  align-items: center;
+  flex-flow: wrap;
+  position: relative;
+  color: #4c4c4c;
+  gap: 10px;
+}
+.bookmark-type__button {
+  display: inline-block;
+  border-radius: 25px;
+  padding: 6px 12px;
+  color: #242424;
+  background: #f1f3f4;
+}
+.bookmark-type__button:last-child {
+  margin-right: 0;
+}
+.bookmark-type__button:hover {
+  background: #d9d9d9;
+  color: #333;
+}
+.bookmark-type__button.active {
+  color: #fff;
+  background: var(--primary-button-default);
+}
+.bookmark-type__button.active:hover:not(.active) {
+  background: #555;
+}
+
+.manga-list-view .list-view .progress-bar {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  z-index: 2;
+}
+.manga-list-view .list-view.mode--table .progress-bar {
+  position: relative;
+  margin-top: 10px;
+}
+
+.action-wrapper {
+  display: flex;
+  align-items: end;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 0.9rem;
+  line-height: 0.9rem;
+  padding: 8px;
+  z-index: 2;
+}
+.action-wrapper .read {
+  bottom: 5px;
+  right: 5px;
+  left: 5px;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+.action-wrapper .read i {
+  margin-right: 4px;
+  color: #71be34;
+}
+.action-wrapper .read:hover {
+  background: #fff;
+  color: #333;
+}
+.action-wrapper .unread {
+  bottom: 5px;
+  right: 5px;
+  left: 5px;
+  display: none;
+  white-space: nowrap;
+  background: #ff9800;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+.action-wrapper .unread i {
+  margin-right: 2px;
+  color: #fff;
+}
+.action-wrapper .unread:hover {
+  background: #fff;
+  color: #333;
+}
+.action-wrapper .unread:hover i {
+  color: #ff9800;
+}
+.action-wrapper .remove {
+  top: 5px;
+  right: 5px;
+  background: #e91e63;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: auto;
+}
+.action-wrapper .remove:hover {
+  background: #fff;
+  color: #e91e63;
+}
+
+.bookmark-action {
+  display: flex;
+  align-items: center;
+  flex-flow: wrap;
+  margin-bottom: 0.5rem;
+}
+.bookmark-action .read {
+  display: none;
+  margin-right: 10px;
+  white-space: nowrap;
+  color: #333;
+  border-radius: 25px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.bookmark-action .read i {
+  margin-right: 4px;
+  color: #71be34;
+}
+.bookmark-action .read:hover {
+  background: #eee;
+}
+.bookmark-action .unread {
+  display: none;
+  margin-right: 10px;
+  white-space: nowrap;
+  color: #333;
+  border-radius: 25px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.bookmark-action .unread i {
+  color: #ff9800;
+  margin-right: 2px;
+}
+.bookmark-action .unread:hover {
+  background: #eee;
+}
+.bookmark-action .remove {
+  color: #333;
+  border-radius: 25px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.bookmark-action .remove i {
+  margin-right: 2px;
+  vertical-align: middle;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  color: #e91e63;
+}
+.bookmark-action .remove:hover {
+  background: #eee;
+}
+
+.is-unread .unread {
+  display: block;
+}
+
+.is-read .read {
+  display: block;
+}
+
+.manga-list-view .list-view.mode--table .list-view__item-action {
+  padding: 5px;
+  min-height: 34px;
+}
+@media screen and (max-width: 992px) {
+  .manga-list-view .list-view.mode--table .list-view__item-team, .manga-list-view .list-view.mode--table .list-view__item-status {
+    display: none;
+  }
+  .manga-list-view .list-view.mode--table .list-view__item-name {
+    width: 40%;
+  }
+  .manga-list-view .list-view.mode--table .list-view__item-chapter {
+    width: 25%;
+  }
+  .manga-list-view .list-view.mode--table .list-view__item-action {
+    width: 35%;
+  }
+}
+@media screen and (max-width: 576px) {
+  .manga-list-view .list-view.mode--table .list-view__item-team, .manga-list-view .list-view.mode--table .list-view__item-status, .manga-list-view .list-view.mode--table .list-view__item-chapter {
+    display: none;
+  }
+  .manga-list-view .list-view.mode--table .list-view__item-name {
+    width: 60%;
+  }
+  .manga-list-view .list-view.mode--table .list-view__item-action {
+    width: 40%;
+  }
+}
+
+/*# sourceMappingURL=bookmark.css.map */
