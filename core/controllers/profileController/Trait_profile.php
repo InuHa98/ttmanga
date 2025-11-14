@@ -365,7 +365,7 @@ trait Trait_profile {
 					else {
 						if(Smiley::update($smiley['id'], [
 							'name' => $name,
-							'images' => $images
+							'images' => array_values($images)
 						])) {
 							$success = lang('system', 'success_update');
 						} else {

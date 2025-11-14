@@ -37,7 +37,7 @@ class Smiley extends Model {
 			'type' => $is_system ? self::TYPE_SYSTEM : self::TYPE_USER,
 			'user_id' => Auth::$id,
 			'name' => $name,
-			'images' => $images
+			'images' => array_values($images)
 		]) > 0)
 		{
 			return true;
