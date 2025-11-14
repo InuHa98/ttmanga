@@ -313,6 +313,13 @@ class mangaManagementController {
 			'(SELECT <color> FROM <core_roles> WHERE <id> = <{table}.role_id>) AS <role_color>'
 		])::get($manga['user_upload']);
 
+		$where = [
+			'manga_id' => $manga['id']
+		];
+
+		$count = Chapter::count($where);
+		new Pagination($count, App::$pagination_limit);
+		$pagination = Pagination::get();
 		$chapters = Chapter::join([
 			'LEFT JOIN <core_users> ON <{table}.user_upload> = <core_users.id>'
 		])::select([
@@ -325,9 +332,12 @@ class mangaManagementController {
 			'<core_users.avatar> AS <uploader_avatar>',
 			'<core_users.user_ban> AS <uploader_ban_id>',
 			'(SELECT <color> FROM <core_roles> WHERE <id> = <core_users.role_id>) AS <uploader_role_color>'
-		])::list([
-			'manga_id' => $manga['id']
-		]);
+		])::list(array_merge($where, [
+			'LIMIT' => [
+				$pagination['start'], $pagination['limit']
+			]
+		]));
+
 
 		$lst_teams = TeamManga::list([
 			'manga_id' => $manga['id']
@@ -349,7 +359,9 @@ class mangaManagementController {
 				'teams',
 				'status',
 				'links',
+				'count',
 				'chapters',
+				'pagination',
 				'lst_teams'
 			)
 		];

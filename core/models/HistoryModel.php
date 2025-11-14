@@ -115,6 +115,9 @@ class History extends Model {
 		if($history)
 		{
 			$data = json_decode($history['data'], true);
+			uasort($data, function($a, $b) {
+			    return $b[1] <=> $a[1];
+			});
 			$count = count($data);
 		}
 
@@ -126,7 +129,7 @@ class History extends Model {
 			$data = array_slice($data, $pagination['start'], $pagination['limit'], true);
 			$ids = array_map(function($arr) {
 				return $arr[0];
-			}, array_values($data));
+			}, array_values(array_reverse($data)));
 
 			$items = Chapter::join([
 					'INNER JOIN <'.Manga::$table.'> AS <core_mangas> ON <'.Manga::$table.'.id> = <{table}.manga_id> AND <'.Manga::$table.'.is_trash> = '.Manga::IS_ACTIVE

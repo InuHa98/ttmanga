@@ -23,6 +23,7 @@ class toolLeechController {
 	public const REFERER_HANGTRUYEN = 5;
 	public const REFERER_CMANGA = 6;
 	public const REFERER_MINOTRUYEN = 7;
+	public const REFERER_TRUYENQQCOMVN = 8;
 
 
 	private static function result($code, $message = null, $data = null)
@@ -65,6 +66,10 @@ class toolLeechController {
 
 		if(preg_match('#^https?://(?:.*?\.)?truyenvua\.(?:.*?)/#', $link)) {
 			return 'https://truyenqqgo.com/';
+		}
+
+		if(preg_match('#^https?://(.*?)\.static3t\.com/#', $link)) {
+			return 'https://truyenqq.com.vn/';
 		}
 
 		if(preg_match('#^https?://(?:.*?\.)?(tintruyen|hinhgg)\.(?:.*?)/#', $link)) {
@@ -270,6 +275,26 @@ class toolLeechController {
 			}
 		}
 
+		//truyenqq.com.vn
+		else if(preg_match('#^https?://(truyenqq\.com\.vn|truyenqqgo\.net)/(?:[^/]+)/chapter-([0-9]+)$#', $link)) {
+			$link = str_replace('truyenqq.com.vn', 'truyenqqgo.net', $link);
+			$html = self::getHtmlContainer(self::curl_get_content($link), "//div[@class='reading-content']");
+			preg_match_all('#<img[^>]+class="lazy"[^>]+data-src="([^"]+)"#i', $html, $m);
+			if (empty($m[1])) {
+				$response = [
+					'code' => 429,
+					'message' => 'Có lỗi xảy ra. Vui lòng thử lại sau ít phút', #edit_lang
+					'data' => null
+				];
+			} else {
+				$response = [
+					'code' => 200,
+					'message' => self::REFERER_TRUYENQQCOMVN,
+					'data' => $m[1]
+				];
+			}
+		}
+
 		//mangadex
 		else if(preg_match('#^https?://(?:.*?\.)?mangadex\.(?:.*?)/chapter/([^/]+)(?:/[0-9]+)?$#', $link, $m)) {
 			$id_chapter = isset($m[1]) ? $m[1] : 0;
@@ -467,6 +492,39 @@ class toolLeechController {
 				$response = [
 					'code' => 200,
 					'message' => self::REFERER_TRUYENQQ,
+					'data' => $data
+				];
+			}
+		}
+
+		//truyenqq.com.vn
+		else if(preg_match('#^https?://(truyenqq\.com\.vn|truyenqqgo\.net)/(.*?)$#', $link)) {
+			$link = str_replace('truyenqq.com.vn', 'truyenqqgo.net', $link);
+			$html = self::getHtmlContainer(self::curl_get_content($link), "//div[@class='reading-list']");
+
+			preg_match_all('#<a(?:\s+[^>]*)?href="(.*?)"(?:[^>]*)>(.*?)</a>#si', $html, $m);
+			$lst_link = isset($m[1]) ? $m[1] : [];
+			$lst_name = isset($m[2]) ? $m[2] : [];
+
+			if (!$lst_link || !$lst_name) {
+				$response = [
+					'code' => 429,
+					'message' => 'Có lỗi xảy ra. Vui lòng thử lại sau ít phút', #edit_lang
+					'data' => null
+				];
+			} else {
+				$data = [];
+				$i = 0;
+				foreach($lst_link as $link) {
+					$data[] = [
+						'name' => trim($lst_name[$i] ?? ''),
+						'link' => 'https://truyenqqgo.net'.$link
+					];
+					$i++;
+				}
+				$response = [
+					'code' => 200,
+					'message' => self::REFERER_TRUYENQQCOMVN,
 					'data' => $data
 				];
 			}

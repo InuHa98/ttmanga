@@ -174,7 +174,7 @@
 			</div>
 			<div class="col-lg-9">
 				<div class="d-flex justify-content-between align-items-center gap-2 flex-wrap my-2">
-					<span>Có tất cả <b><?=number_format(count($chapters), 0, ',', '.');?></b> chương truyện.</span>
+					<span>Có tất cả <b><?=number_format($count, 0, ',', '.');?></b> chương truyện.</span>
 					<div class="d-flex gap-2 flex-wrap">
 						<div class="drop-menu" id="check-status">
 							<span class="btn btn--small btn--gray disabled">
@@ -252,6 +252,9 @@
 						<?php endforeach; ?>
 						</tbody>
 					</table>
+					<div class="pagination">
+						<?=html_pagination($pagination);?>
+					</div>
 				<?php else: ?>
 					<div class="alert alert--warning">Chưa có chương truyện nào!!!</div>
 				<?php endif; ?>

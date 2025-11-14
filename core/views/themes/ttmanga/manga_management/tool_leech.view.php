@@ -721,7 +721,7 @@
 				selectedLink.push($(this).val())
 			});
 
-            ITEMS = ITEMS.filter(item => selectedLink.some(o => o.includes(item.link))).reverse()
+            ITEMS = ITEMS.filter(item => selectedLink.some(o => o == item.link)).reverse()
 
             ITEMS.map(o => {
                 o.status = o?.images?.length ? STATUS_COMPLETE : STATUS_PENDING
@@ -886,7 +886,7 @@
                     
                     saveItems()
                     render_status_chapter(item)
-                    if (ITEMS.some(o => o.images.some(i => i.status == STATUS_UPLOADING))) {
+                    if (ITEMS.some(o => o?.images?.some(i => i.status == STATUS_UPLOADING))) {
                         start_reupload()
                     }
                     return true;

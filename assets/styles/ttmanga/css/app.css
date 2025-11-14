@@ -944,7 +944,6 @@ li {
   transform: translateX(0);
 }
 .show-side-nav .side-nav-main {
-  margin-left: 300px;
   width: 100%;
 }
 .show-side-nav .section-header {
