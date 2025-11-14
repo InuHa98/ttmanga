@@ -384,7 +384,16 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 			icon_loading.hide();
 		}
 
-		
+		function debounce(func, ms) {
+			let timer;
+			return function(...args) {
+				clearTimeout(timer);
+				timer = setTimeout(() => func.apply(this, args), ms);
+			}
+		}
+
+		const debouncedPrevious = debounce(Previous, 150);
+		const debouncedNext = debounce(Next, 150);
 
 		current_image.on('load', onImageLoad).on('error', onImageError);
 
@@ -417,6 +426,14 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 				current_image.attr("src", window.trim(lstImages[currImage]))
 			}
 
+			current_image.off('click').on('click', function() {
+			if (!$(this).hasClass('error')) {
+				return debouncedNext();
+			}
+			
+			$(this).attr('src', window.trim($(this).attr('src')));
+		});
+
 			$(class_select_page).val(currImage).change()
 
 			msg_error.removeClass('show');
@@ -432,17 +449,12 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 		{
 			if (typeof lstImages[currImage + 1] != "undefined")
 			{
-				// if ($.inArray(lstImages[currImage + 1], lstImagesLoaded) < 0) {
-					nxtImage = $('<img />').attr('src', window.trim(lstImages[currImage + 1]));
-				// }
-
+				nxtImage = $('<img />').attr('src', window.trim(lstImages[currImage + 1]));
 			}
 
 			if (typeof lstImages[currImage - 1] != "undefined")
 			{
-				// if ($.inArray(lstImages[currImage - 1], lstImagesLoaded) < 0) {
-					preImage = $('<img />').attr('src', window.trim(lstImages[currImage - 1]));
-				// }
+				preImage = $('<img />').attr('src', window.trim(lstImages[currImage - 1]));
 			}
 		} 
 
@@ -494,30 +506,10 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 			}
 		}
 
-		
-		function debounce(func, ms) {
-			let timer;
-			return function(...args) {
-				clearTimeout(timer);
-				timer = setTimeout(() => func.apply(this, args), ms);
-			}
-		}
-
-		const debouncedPrevious = debounce(Previous, 150);
-		const debouncedNext = debounce(Next, 150);
-
 		$(document).on("keyup", function (event) {
 			if (event.keyCode === 37) debouncedPrevious();
 			else if (event.keyCode === 39) debouncedNext();
 		}); 
-
-		current_image.on("click", function() {
-			if (!$(this).hasClass('error')) {
-				return debouncedNext();
-			}
-			$(this).attr('src', window.trim($(this).attr('src')));
-		});
-
 
 		document.body.addEventListener("swiped-left", () => {
 			debouncedNext()

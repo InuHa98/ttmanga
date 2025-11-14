@@ -176,9 +176,19 @@
 				<div class="d-flex justify-content-between align-items-center gap-2 flex-wrap my-2">
 					<span>Có tất cả <b><?=number_format(count($chapters), 0, ',', '.');?></b> chương truyện.</span>
 					<div class="d-flex gap-2 flex-wrap">
-						<button class="btn btn--small btn--gray disabled" id="btn-check-status">
-							<i class="fas fa-tasks"></i> Kiểm tra ảnh hỏng <span role="multiple_selected_count">(0)</span>
-						</button>
+						<div class="drop-menu" id="check-status">
+							<span class="btn btn--small btn--gray disabled">
+								Kiểm tra ảnh hỏng <span role="multiple_selected_count">(0)</span> <i class="fas fa-ellipsis-h"></i>
+							</span>
+							<ul class="drop-menu__content">
+								<li id="btn-check-status">
+									Kiểm tra kỹ từng ảnh
+								</li>
+								<li id="btn-fast-check-status">
+									Kiểm tra nhanh (chỉ 1 số lượng ảnh)
+								</li>
+							</ul>
+						</div>
 						<button class="btn btn--small btn--danger disabled" role="delete-selected">
 							<i class="fas fa-times"></i> Xoá mục đã chọn <span role="multiple_selected_count">(0)</span>
 						</button>
@@ -259,6 +269,7 @@
 		const btnCheckStatus = $('#check-status')
 		let ids_chapter = []
 		let is_checking = false
+		let is_fast_check = false
 		let chapter_checking = null
 
 		$('.tabmenu-horizontal__item').on('click', function(e) {
@@ -295,7 +306,8 @@
 			if(!chapter_checking)
 			{
 				chapter_checking = null
-				return $(this).removeClass('disabled');
+				is_fast_check = false
+				return btnCheckStatus.removeClass("disabled");
 			}
 
 			const parent_tr = chapter_checking.target
@@ -311,7 +323,8 @@
                 type: "POST",
                 url: "<?=appendUrlApi(RouteMap::get('ajax', ['name' => ajaxController::CHECK_IMAGE_CHAPTER]));?>",
                 data: {
-                    <?=InterFaceRequest::ID;?>: chapter_checking.id
+                    <?=InterFaceRequest::ID;?>: chapter_checking.id,
+					fast: is_fast_check
                 },
                 dataType: 'json',
 				cache: false,
@@ -338,9 +351,7 @@
 			});
 		};
 
-		$('#btn-check-status').on('click', function() {
-			$(this).addClass('disabled')
-
+		const start_check = function() {
 			$(role_multiple_selected+":checked").each(function(){
 				const chapter = DATA_CHAPTERS.find(o => o.id == $(this).val());
 				const target = $(`tr[data-id="${chapter?.id}"]`);
@@ -354,8 +365,16 @@
 			if (!chapter_checking) {
 				check_status();
 			}
+		}
+
+		$('#btn-check-status').on('click', function() {
+			start_check()
 		})
 
+		$('#btn-fast-check-status').on('click', function() {
+			is_fast_check = true
+			start_check()
+		})
 
         $('[role=delete-chapter]').on('click', function(e) {
             e.preventDefault();

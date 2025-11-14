@@ -1,0 +1,12 @@
+### Storage###
+/storage/
+
+### .env ###
+.env
+.env.example
+
+### Config ###
+config.json
+
+### database ###
+ttmanga_v2.sql

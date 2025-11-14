@@ -65,6 +65,7 @@ class Manga extends Model {
 
     public const SEPARATOR = "\n";
 
+    public const STATUS_ALL = -1;
     public const STATUS_ONGOING = 0;
     public const STATUS_COMPLETE = 1;
     public const STATUS_DROP = 2;

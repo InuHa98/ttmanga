@@ -347,6 +347,7 @@ class teamController {
 
 		$keyword = trim(Request::get(InterFaceRequest::KEYWORD, ''));
 		$type = trim(Request::get(InterFaceRequest::TYPE, ''));
+		$status = Request::get(InterFaceRequest::STATUS, Manga::STATUS_ALL);
 
 		if($keyword != '') {
 			switch($type) {
@@ -380,6 +381,17 @@ class teamController {
 			}
 		}
 
+		switch($status) {
+			case Manga::STATUS_ONGOING:
+			case Manga::STATUS_COMPLETE:
+			case Manga::STATUS_DROP:
+				$where['status'] = $status;
+				break;
+			default:
+				$status = Manga::STATUS_ALL;
+				break;
+		}
+
 		$count = Manga::count($where);
 		new Pagination($count, App::$pagination_limit);
 		$pagination = Pagination::get();
@@ -405,6 +417,7 @@ class teamController {
                 'only_show_my_uploader',
                 'keyword',
                 'type',
+				'status',
 				'count',
 				'lst_manga',
 				'pagination'

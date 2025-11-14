@@ -30,8 +30,8 @@ if(isset($_chapter_id)) {
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
-		<meta http-equiv="Pragma" content="no-cache">
-		<meta http-equiv="Expires" content="0">
+		<!-- <meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0"> -->
 		<meta name="viewport" content="<?=($_chapter_id ? 'width=device-width, initial-scale=1' : 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');?>" />
 		<!--meta name="referrer" content="no-referrer" -->
 

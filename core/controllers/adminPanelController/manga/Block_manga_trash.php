@@ -12,6 +12,7 @@ trait Block_manga_trash {
 
 		$keyword = trim(Request::get(InterFaceRequest::KEYWORD, ''));
 		$type = trim(Request::get(InterFaceRequest::TYPE, ''));
+		$status = Request::get(InterFaceRequest::STATUS, Manga::STATUS_ALL);
 
 		if($keyword != '') {
 			switch($type) {
@@ -35,6 +36,17 @@ trait Block_manga_trash {
 					}
 					break;
 			}
+		}
+
+		switch($status) {
+			case Manga::STATUS_ONGOING:
+			case Manga::STATUS_COMPLETE:
+			case Manga::STATUS_DROP:
+				$where['status'] = $status;
+				break;
+			default:
+				$status = Manga::STATUS_ALL;
+				break;
 		}
 
 
@@ -114,6 +126,7 @@ trait Block_manga_trash {
 				'success',
 				'keyword',
 				'type',
+				'status',
 				'insertHiddenToken',
 				'count',
 				'lst_manga',

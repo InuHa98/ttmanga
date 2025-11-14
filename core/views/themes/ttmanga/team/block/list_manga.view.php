@@ -1,27 +1,37 @@
 
 <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-2">
     <div>Truyện đã đăng (<b><?=number_format($count, 0, ',', '.');?></b>)</div>
-    <a class="btn btn--small btn--round" href="<?=RouteMap::get('manga_management', ['action' => mangaManagementController::ACTION_NEW_MANGA]);?>"><i class="fas fa-plus"></i> Thêm truyện mới</a>
+    <a class="btn btn--small btn--round btn--info" href="<?=RouteMap::get('manga_management', ['action' => mangaManagementController::ACTION_NEW_MANGA]);?>"><i class="fas fa-plus"></i> Thêm truyện mới</a>
 </div>
 
 <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-2">
     <span class="form-check">
         <input type="checkbox" id="only-my-upload" <?=($only_show_my_uploader == 'true' ? 'checked' : null);?>>
-        <label for="only-my-upload">Chỉ hiển thị truyện do tôi upload</label>
+        <label for="only-my-upload">Chỉ hiển thị truyện của tôi</label>
     </span>
-    <form method="GET" class="action">
-        <div class="input-group">
-            <span class="form-control-feedback"><i class="fas fa-search"></i></span>
-            <input type="text" class="form-input border-radius-left" name="<?=InterFaceRequest::KEYWORD;?>" placeholder="Tìm kiếm theo..." value="<?=_echo($keyword);?>"/>
-            <div class="input-group-append">
-                <select class="js-custom-select" name="<?=InterFaceRequest::TYPE;?>" onchange="this.form.submit()">
-                    <option value="<?=teamController::INPUT_NAME;?>">Tên truyện</option>
-                <?php if ($only_show_my_uploader != 'true'): ?>
-                    <option <?=($type == teamController::INPUT_UPLOADER ? 'selected' : null);?> value="<?=teamController::INPUT_UPLOADER;?>">Người đăng</option>
-                <?php endif; ?>
-                    <option <?=($type == teamController::INPUT_TEAM ? 'selected' : null);?> value="<?=teamController::INPUT_TEAM;?>">Nhóm chia sẻ</option>
-                </select>               
+    <form method="GET" class="d-flex justify-content-start align-items-center gap-2 flex-wrap">
+        <div>
+            <div class="input-group">
+                <span class="form-control-feedback"><i class="fas fa-search"></i></span>
+                <input type="text" class="form-input border-radius-left" name="<?=InterFaceRequest::KEYWORD;?>" placeholder="Tìm kiếm theo..." value="<?=_echo($keyword);?>"/>
+                <div class="input-group-append">
+                    <select class="js-custom-select" name="<?=InterFaceRequest::TYPE;?>" onchange="this.form.submit()">
+                        <option value="<?=teamController::INPUT_NAME;?>">Tên truyện</option>
+                    <?php if ($only_show_my_uploader != 'true'): ?>
+                        <option <?=($type == teamController::INPUT_UPLOADER ? 'selected' : null);?> value="<?=teamController::INPUT_UPLOADER;?>">Người đăng</option>
+                    <?php endif; ?>
+                        <option <?=($type == teamController::INPUT_TEAM ? 'selected' : null);?> value="<?=teamController::INPUT_TEAM;?>">Nhóm chia sẻ</option>
+                    </select>               
+                </div>
             </div>
+        </div>
+        <div>
+            <select class="js-custom-select" name="<?=InterFaceRequest::STATUS;?>" onchange="this.form.submit()" data-max-width="200px">
+                <option value="<?=Manga::STATUS_ALL;?>">Tất cả trạng thái</option>
+                <option <?=($status == Manga::STATUS_ONGOING ? 'selected' : null);?> value="<?=Manga::STATUS_ONGOING;?>">Đang tiến hành</option>
+                <option <?=($status == Manga::STATUS_COMPLETE ? 'selected' : null);?> value="<?=Manga::STATUS_COMPLETE;?>">Đã hoàn thành</option>
+                <option <?=($status == Manga::STATUS_DROP ? 'selected' : null);?> value="<?=Manga::STATUS_DROP;?>">Tạm ngưng</option>
+            </select>
         </div>
     </form>
 </div>
@@ -34,6 +44,7 @@
                 <th></th>
                 <th width="70%">Tên truyện</th>
                 <th width="30%">Mới nhất</th>
+                <th>Trạng thái</th>
                 <th>Đăng bởi</th>
                 <th>Nhóm cộng sự</th>
             </tr>
@@ -73,6 +84,7 @@
             <span class="empty">Chưa có</span>
         <?php endif; ?>
         </td>
+        <td class="nowrap"><?=Manga::get_status_name($manga);?></td>
         <td class="nowrap">
             <a target="_blank" class="user-infomation" href="<?=RouteMap::get('profile', ['id' => $uploader['id']]);?>">
                 <?=render_avatar($uploader, null, true, true);?>

@@ -234,12 +234,11 @@
                 (o) => o?.images?.every(o2 => o2.status == STATUS_COMPLETE)
             ).length;
 
-
             if (!ITEMS.length) {
                 progress.html('--/--')
                 return titleProgress.html('Tiến trình')
             }
-            titleProgress.html('Đang reupload ảnh')
+            titleProgress.html('Reupload ảnh')
 
             if (total_pending > 0) {
                 progress
@@ -311,9 +310,9 @@
         }
 
         const render_status_chapter = (chapter) => {
-            const target = chapter.target
-            if (!target) {
-                return
+            const target = chapter?.target
+            if (!target || !chapter?.images) {
+                return render_status_reupload();
             }
 
             const titleProgress = target.find('[role="chapter-progress-title"]')
@@ -423,9 +422,12 @@
                 }
                 const tr = $(`
                 <tr>
-                    <td>
-                        <button role="btn-edit-chapter" class="btn btn--small btn--gray">
+                    <td class="nowrap">
+                        <button role="btn-edit-chapter" class="btn btn--small btn--gray text-">
                             <i class="fas fa-edit"></i> Chỉnh sửa
+                        </button>
+                        <button role="btn-delete-chapter" class="btn btn--small btn--gray text-danger">
+                            <i class="fas fa-times"></i> Xoá
                         </button>
                     </td>
                     <td class="chapter-name" role="name">
@@ -516,6 +518,7 @@
 
             const chapter = CHAPTERS.shift();
             chapter.target.find('[role="btn-edit-chapter"]').addClass('disabled')
+            $('[role="btn-delete-chapter"]').addClass('disabled')
             btnGetListChapter.addClass("disabled");
             btnRetry.addClass("disabled");
             btnReupload.addClass("disabled");
@@ -731,9 +734,9 @@
             stopGetlink = false
             if (ITEMS.every(item => item?.images?.every(o => o.status == STATUS_COMPLETE))) {
                 btnSave.removeClass('disabled')
-                btnRetry.add('disabled')
-                btnReupload.add('disabled')
-                btnStop.add('disabled')
+                btnRetry.addClass('disabled')
+                btnReupload.addClass('disabled')
+                btnStop.addClass('disabled')
                 ITEMS = ITEMS.map(o => ({...o, status: STATUS_COMPLETE}))
             }
             get_link_chapter()
@@ -821,7 +824,7 @@
                 <div class="dialog-label mt-3">Link ảnh:</div>
                 <div class="form-group">
                     <div class="form-control">
-                        <textarea class="form-textarea" rows="10" wrap="off" placeholder="Mỗi ảnh cách nhau bởi dấu xuống dòng">${item.images.map(i => i.link).join("\n")}</textarea>
+                        <textarea class="form-textarea" rows="10" wrap="off" placeholder="Mỗi ảnh cách nhau bởi dấu xuống dòng">${item?.images?.map(i => i.link)?.join("\n") || ''}</textarea>
                     </div>
                 </div>
             </div>`);
@@ -889,6 +892,33 @@
                     return true;
                 },
             });
+        })
+
+        $(document).on('click', '[role="btn-delete-chapter"]', function() {
+            const item = ITEMS.find(o => o.target[0] == $(this).parents('tr')[0])
+            if (!item) {
+                return
+            }
+            item.target.remove();
+
+            ITEMS = ITEMS.filter(o => o.link != item.link)
+            if (ITEMS.every(item => item?.images?.every(o => o.status == STATUS_PENDING))) {
+                btnRetry.addClass('disabled')
+                btnReupload.removeClass('disabled')
+            }
+            else if (ITEMS.every(item => item?.images?.every(o => o.status == STATUS_COMPLETE))) {
+                btnRetry.addClass('disabled')
+                btnReupload.addClass('disabled')
+                btnStop.addClass('disabled')
+                btnSave.removeClass('disabled')
+            }
+            else {
+                btnRetry.addClass('disabled')
+                btnReupload.removeClass('disabled')
+                btnStop.addClass('disabled')
+                btnSave.addClass('disabled')
+            }
+            render_status_chapter(item)
         })
 
         btnReupload.on("click", () => {

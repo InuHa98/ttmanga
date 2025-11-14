@@ -303,7 +303,12 @@ class ajaxController
 			return self::result(429, 'Không có ảnh'); #edit_lang
 		}
 
+		$is_fast_check = Request::post('fast', 0);
+		if ($is_fast_check == 'false') {
+			$is_fast_check = 0;
+		}
 		$error = 0;
+		$success = 0;
 		$plus = '';
 		foreach($images as $image) {
 			if (connection_aborted()) {
@@ -316,8 +321,13 @@ class ajaxController
 				$plus = '+';
 				break;
 			}
+			if ($is_fast_check && $error == 0 && $success > 3) {
+				break;
+			}
 			if (!self::is_live_image(trim($image))) {
 				$error++;
+			} else {
+				$success++;
 			}
 		}
 
@@ -400,7 +410,7 @@ class ajaxController
 		$info = curl_getinfo($ch);
 		curl_close($ch);
 
-		if (($info['http_code'] ?? 0) != 200 || ($info['download_content_length'] ?? 0) < 1000) {
+		if (($info['http_code'] ?? 0) != 200 || ($info['download_content_length'] ?? 0) < 500) {
 			return false;
 		}
 

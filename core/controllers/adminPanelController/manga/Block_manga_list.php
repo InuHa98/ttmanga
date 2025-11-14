@@ -12,6 +12,7 @@ trait Block_manga_list {
 
 		$keyword = trim(Request::get(InterFaceRequest::KEYWORD, ''));
 		$type = trim(Request::get(InterFaceRequest::TYPE, ''));
+		$status = Request::get(InterFaceRequest::STATUS, Manga::STATUS_ALL);
 
 		if($keyword != '') {
 			switch($type) {
@@ -36,6 +37,18 @@ trait Block_manga_list {
 					break;
 			}
 		}
+
+		switch($status) {
+			case Manga::STATUS_ONGOING:
+			case Manga::STATUS_COMPLETE:
+			case Manga::STATUS_DROP:
+				$where['status'] = $status;
+				break;
+			default:
+				$status = Manga::STATUS_ALL;
+				break;
+		}
+
 
 		$count = Manga::count($where);
 		new Pagination($count, App::$pagination_limit);
@@ -63,6 +76,7 @@ trait Block_manga_list {
 			'data' => compact(
 				'keyword',
 				'type',
+				'status',
 				'count',
 				'lst_manga',
 				'pagination'
