@@ -240,12 +240,12 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 </div>
 
 
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/tinymce/tinymce.min.js?v=<?=$_version;?>"></script>
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/form-validator.js?v=<?=$_version;?>"></script>
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/swiped-events.js?v=<?=$_version;?>"></script>
-<?=themeController::load_js('js/comments.js');?>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/tinymce/tinymce.min.js?v=<?=$_version;?>"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/form-validator.js?v=<?=$_version;?>"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/swiped-events.js?v=<?=$_version;?>"></script>
+<?=themeController::load_js('script/comments.js');?>
 
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/wasm_exec.js"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/wasm_exec.js"></script>
 <script type="text/javascript">
 
 	const go = new Go();
@@ -268,7 +268,11 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 			comment_id: <?=Request::get(InterFaceRequest::COMMENT, 0);?>,
 			ajax_url: "<?=RouteMap::get('comment');?>",
 			editor_theme: 'ttmanga',
-			meme_sources: <?=Smiley::build_meme_source();?>
+			meme_sources: <?=Smiley::build_meme_source();?>,
+			taguser: {
+				api_url: '<?=appendUrlApi(RouteMap::get('ajax', ['name' => ajaxController::SEARCH_USER]));?>',
+				delimiter: '@'
+			}
 		});
 
 	<?php if($read_mode != 1): ?>
@@ -321,6 +325,7 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 
 
 		var currImage = 0;
+		container_images.find('img[src=""]:first').attr('src', window.trim(lstImages[currImage++]));
 		container_images.find('img[src=""]:first').attr('src', window.trim(lstImages[currImage++]));
 
 

@@ -392,6 +392,7 @@ li {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-transform: lowercase;
 }
 
 .user-role {
@@ -2865,6 +2866,12 @@ li {
   border-radius: 10px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
+.team-infomation .section-team-cover .team-name .user-avatar::before {
+  border-radius: 0;
+}
+.team-infomation .section-team-cover .team-name .user-avatar img {
+  border-radius: 0;
+}
 .team-infomation .section-team-cover .team-name .name {
   margin-left: 10px;
   font-size: 1.6rem;
@@ -3337,6 +3344,10 @@ ul.sort-chapter-box li .name {
 }
 .manga-status.drop::before {
   background: #9e9e9e;
+}
+
+.mce-tag-username {
+  margin-right: 5px;
 }
 
 .text-primary {
@@ -5186,7 +5197,7 @@ table td.table__empty {
   position: absolute;
   left: 28px;
   top: 60px;
-  bottom: 28px;
+  bottom: 18px;
   width: 30px;
   border-style: solid;
   border-color: #f0f2f5;
@@ -5202,7 +5213,9 @@ table td.table__empty {
   color: #050505;
 }
 .section-comment .comment-container .comment-wrapper__body-action {
-  margin-left: 5px;
+  position: absolute;
+  right: 0;
+  top: -5px;
 }
 .section-comment .comment-container .comment-wrapper__body-text {
   display: inline-block;
@@ -5218,6 +5231,7 @@ table td.table__empty {
   word-break: break-word;
   font-weight: 600;
   font-size: 1.1rem;
+  padding-right: 30px;
 }
 .section-comment .comment-container .comment-wrapper__body-text .username a:hover {
   text-decoration: underline;
@@ -5237,8 +5251,7 @@ table td.table__empty {
   font-size: 1rem;
 }
 .section-comment .comment-container .comment-wrapper__body-text .text {
-  display: inline-flex;
-  align-items: end;
+  display: inline-block;
   margin-top: 10px;
   padding: 10px 20px;
   background: #f8f9fa;
@@ -5263,7 +5276,7 @@ table td.table__empty {
   align-items: center;
   margin-top: 8px;
   color: #65676b;
-  margin-left: 10px;
+  margin-left: 5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -5308,6 +5321,10 @@ table td.table__empty {
 .section-comment .comment-container .comment-wrapper__reply.reverse {
   flex-direction: column-reverse;
 }
+.section-comment .comment-container .comment-wrapper__reply .has-reply::before,
+.section-comment .comment-container .comment-wrapper__reply .focus-reply::before {
+  display: none;
+}
 .section-comment .comment-container .comment-wrapper__reply .reply-hide-more {
   margin-bottom: 10px;
   color: #65676b;
@@ -5331,7 +5348,7 @@ table td.table__empty {
   text-decoration: underline;
 }
 .section-comment .comment-container .comment-wrapper__reply .reply-show-more {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #65676b;
   cursor: pointer;
   white-space: nowrap;
@@ -5392,9 +5409,6 @@ table td.table__empty {
                   border-bottom-width: 2px;
               }
               */
-}
-.section-comment .comment-container .comment-wrapper__reply .comment-item + .comment-item {
-  margin-top: 10px;
 }
 .section-comment .comment-pagination {
   position: relative;

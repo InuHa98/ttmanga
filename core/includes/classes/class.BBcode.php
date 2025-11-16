@@ -25,6 +25,16 @@ class BBcode
 			"/\[url\](.*?)\[\/url\]/is" => "<a rel=\"nofollow\" href=\"$1\" target=\"_blank\" title=\"$1\">$1</a>"
 		);
 		$var = preg_replace(array_keys($bbcode), array_values($bbcode), $var);
+		$var = preg_replace_callback(
+			'/\[tag=([0-9]+)\]([^\[]+)\[\/tag\]/is',
+			function ($m) {
+				$id = $m[1];
+				$name = $m[2];
+				$url = RouteMap::get('profile', ['id' => $id]);
+				return '<a class="mce-tag-username" data-id="' . $id . '" target="_blank" href="' . $url . '">' . $name . '</a>';
+			},
+			$var
+		);
 		return $var;
 	}
 
@@ -41,6 +51,7 @@ class BBcode
 			"/\[download\](.*?)\[\/download\]/is" => "$1",
 			"/\[color\=(.*?)\](.*?)\[\/color\]/is" => "$2",
 			"/\[smiley\](.*?)\[\/smiley\]/is" => "",
+			"/\[tag=([0-9]+)\]([^\[]+)\[\/tag\]/is" => "$2",
 			"/\[img\](.*?)\[\/img\]/is" => "",
 			"/\[img\=(.*)\]/is" => "",
 			"/\[left\](.*?)\[\/left\]/is" => "$1",
@@ -59,6 +70,7 @@ class BBcode
 		$bbcode = array(
 			"/\[img\](.*?)\[\/img\]/is" => " [image] ",
 			"/\[smiley\](.*?)\[\/smiley\]/is" => " [icon] ",
+			"/\[tag=([0-9]+)\]([^\[]+)\[\/tag\]/is" => "$2",
 			"/\[img\=(.*)\]/is" => " [image] "
 		);
 		$var = preg_replace(array_keys($bbcode), array_values($bbcode), $var);

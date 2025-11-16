@@ -354,7 +354,7 @@ class toolLeechController {
 		}
 
 		//minotruyen
-		else if(preg_match('#^https?://(?:.*?\.)?(?:minotruyen|minotruyen\w{2})\.(?:.*?)/manga/truyen/(?:[^/]+)/chapter-([0-9]+(?:-[0-9]+)?)$#', $link)) {
+		else if(preg_match('#^https?://(?:.*?\.)?(?:minotruyen|minotruyen\w{2})\.(?:.*?)/manga/truyen/(?:[^/]+)/chapter(?:.*)-([0-9]+)$#', $link)) {
 			$html = self::curl_get_content($link);
 			preg_match('#<script src="/_next/static/chunks/app/[^/]+/.+?/layout-([^.]+)\.js" async=""></script>#si', $html, $m);
 			if (!empty($m[1])) {

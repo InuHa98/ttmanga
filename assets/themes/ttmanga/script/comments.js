@@ -37,11 +37,15 @@ function Comment(options = {}) {
     text_delete: options.text_delete || "Xoá bình luận",
     text_delete_dialog:
       options.text_delete_dialog || "Bạn thực sự muốn xoá bình luận này?",
-    text_cancel: options.text_cancel || "Cancel",
-    text_submit: options.text_submit || "Continue",
-    text_save: options.text_save || "Save",
+    text_cancel: options.text_cancel || "Huỷ",
+    text_submit: options.text_submit || "Tiếp tục",
+    text_save: options.text_save || "Lưu lại",
 
     meme_sources: options.meme_sources || [],
+    taguser: options.taguser || {
+      api_url: null,
+      delimiter: null,
+    },
 
     editor_theme: options.editor_theme || null,
     ajax_url: options.ajax_url || null,
@@ -113,6 +117,7 @@ function Comment(options = {}) {
       id: "#" + textarea_comment[0].id,
       theme: _config.editor_theme,
       meme_sources: _config.meme_sources,
+      taguser: _config.taguser,
       events: {
         input: function (e) {
           $("#" + this.id)
@@ -144,6 +149,7 @@ function Comment(options = {}) {
       id: "#" + editor_id,
       theme: _config.editor_theme,
       meme_sources: _config.meme_sources,
+      taguser: _config.taguser,
       events: {
         input: function (e) {
           $("#" + this.id)
@@ -176,6 +182,7 @@ function Comment(options = {}) {
       id: "#" + editor_id,
       theme: _config.editor_theme,
       meme_sources: _config.meme_sources,
+      taguser: _config.taguser,
       events: {
         input: function (e) {
           $("#" + this.id)
@@ -316,31 +323,39 @@ function Comment(options = {}) {
                 </div>";
       }
 
-      html_comment +=
-        '\
-            </div>\
-            <div class="comment-wrapper__footer">\
-                ' +
-        (comment.is_reply
-          ? '<div class="' + class_reply + '"> ' + _config.text_reply + "</div>"
-          : "") +
-        '\
-                <div class="time">' +
-        (comment.edit
-          ? _config.text_last_edit + ": " + comment.edit
-          : comment.time) +
-        "</div>\
-                " +
-        (!is_reply && !_config.chapter_id && comment.chapter
-          ? '<span class="chapter"><a target="_blank" href="' +
-            comment.chapter["link"] +
-            '">' +
-            htmlEntities(comment.chapter["name"]) +
-            "</a></span>"
-          : "") +
-        '\
-            </div>\
-            <div class="comment-wrapper__reply">';
+      html_comment += `
+            </div>
+            <div class="comment-wrapper__footer">
+            ${
+              !comment.is_own || comment.is_reply
+                ? `
+                <div class="${class_reply}" ${
+                    comment.is_reply
+                      ? ""
+                      : ` data-reply-id="${comment.refid}" data-id="${comment.user_id}" data-name="${comment.username_raw}" `
+                  }>${_config.text_reply}
+                </div>
+                `
+                : ""
+            }
+                <div class="time">
+        ${
+          comment.edit
+            ? _config.text_last_edit + ": " + comment.edit
+            : comment.time
+        }
+        </div>
+        ${
+          !is_reply && !_config.chapter_id && comment.chapter
+            ? '<span class="chapter"><a target="_blank" href="' +
+              comment.chapter["link"] +
+              '">' +
+              htmlEntities(comment.chapter["name"]) +
+              "</a></span>"
+            : ""
+        }
+          </div>
+            <div class="comment-wrapper__reply">`;
 
       if (is_reply != true) {
         html_comment +=
@@ -972,8 +987,12 @@ function Comment(options = {}) {
     comment_container.on("click", "." + class_reply, function () {
       var comment_item = $(this).parents("." + class_comment_item);
       var reply_box = comment_item.find("." + class_reply_editor);
-      var manga_id = comment_item.data("id");
+      var reply_id = comment_item.data("id");
       var chapter_id = comment_item.data("chapter");
+
+      let data_id = $(this).data("id");
+      let data_name = $(this).data("name");
+      let data_reply_id = $(this).data("reply-id");
 
       var isActive = comment_item.find("form").length > 0;
 
@@ -982,16 +1001,25 @@ function Comment(options = {}) {
         .remove();
       $("." + class_comment_wrapper).removeClass(class_reply_focus);
 
-      if (!isActive) {
+      if (!isActive || (data_id && data_name)) {
         editor_id = "textarea_reply_" + id_textarea++;
         reply_editor.find("textarea")[0].id = editor_id;
+
+        if (data_id && data_name) {
+          reply_editor.find(
+            "textarea"
+          )[0].innerHTML = `[tag=${data_id}]@${data_name}[/tag]`;
+          if (data_reply_id) {
+            reply_id = data_reply_id;
+          }
+        }
 
         comment_item.removeClass(class_new_comment);
         $(this)
           .parents("." + class_comment_wrapper)
           .toggleClass(class_reply_focus);
         reply_box.html(reply_editor[0].outerHTML);
-        setup_editor_reply(manga_id, chapter_id);
+        setup_editor_reply(reply_id, chapter_id);
         reply_box[0].scrollIntoView(false);
       }
     });

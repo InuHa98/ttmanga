@@ -185,7 +185,7 @@
                                                     <div class="user-avatar" data-text="${o.first_name}" style="--bg-avatar: ${o.bg_avatar}">
                                                         <img src="${o.avatar}">
                                                     </div>
-                                                    <div class="user-display-name">${o.name}</siv>
+                                                    <div class="user-display-name">${o.name}</div>
                                                 </div>
                                             </li>`);
                                         });

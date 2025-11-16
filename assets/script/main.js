@@ -13,6 +13,10 @@ String.prototype.htmlToBbcode = function () {
   var rep = function (re, str) {
     _self = _self.replace(re, str);
   };
+  rep(
+    /<a class=\"mce-tag-username\" data-id=\"([0-9]+)\"(?:[^>]+)>\@([^<]+)<\/a>/gi,
+    "[tag=$1]@$2[/tag]"
+  );
   rep(/<a.*?href=\"(.*?)\".*?>(.*?)<\/a>/gi, "[url=$1]$2[/url]");
   rep(/<font.*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[color=$1]$2[/color]");
   rep(/<font>(.*?)<\/font>/gi, "$1");
@@ -334,7 +338,7 @@ function multiple_selected(options) {
   });
 })();
 
-function textarea_editor(options = {}) {
+function textarea_editor(options = { settings: {} }) {
   var idEditor = options.id || null;
   var events = options.events || {};
 
@@ -343,6 +347,7 @@ function textarea_editor(options = {}) {
   }
 
   var settings = {
+    ...options.settings,
     selector: idEditor,
     smart_paste: false,
     entity_encoding: "raw",
@@ -352,16 +357,21 @@ function textarea_editor(options = {}) {
 
     meme: {
       size_image: 50,
-      sources: options.meme_sources || [],
+      sources: options?.meme_sources || [],
+    },
+    plugin_taguser: {
+      api_url: options?.taguser?.api_url || null,
+      delimiter: options?.taguser?.delimiter || null,
     },
 
-    plugins: options.plugins || ["bbcode paste image meme"],
+    plugins: options.plugins || ["bbcode paste image meme taguser"],
     toolbar: "bold underline italic image meme",
     paste_auto_cleanup_on_paste: true,
     branding: false,
     object_resizing: false,
     skin: options.theme || null,
     elementpath: false,
+
     setup: function (editor) {
       editor.on("init", function () {
         var textarea = document.querySelector("#" + this.id);

@@ -63,12 +63,12 @@ class ajaxController
 
 	private function search_user()
 	{
-		if(!self::check_method_accept('get'))
+		if(!self::check_method_accept(['get', 'post']))
 		{
 			return self::result(403, 'Access is denied'); #edit_lang
 		}
 
-		$keyword = trim(Request::get(InterFaceRequest::KEYWORD, ''));
+		$keyword = trim(Request::request(InterFaceRequest::KEYWORD, ''));
 
 		$users = User::select([
 			'id',

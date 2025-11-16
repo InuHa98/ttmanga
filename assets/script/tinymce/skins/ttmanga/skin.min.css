@@ -2742,3 +2742,7 @@ i.mce-i-backcolor {
   color: #595959;
   border-color: #e2e4e7;
 }
+
+#mce-panel-tag-username {
+  max-width: 400px;
+}

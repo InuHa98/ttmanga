@@ -34,9 +34,9 @@
 
 		<link rel="stylesheet" href="<?=APP_URL;?>/assets/css/toast-dialog.css?v=<?=$_version;?>">
 
-		<script type="text/javascript" src="<?=APP_URL;?>/assets/styles/<?=themeController::$current_theme;?>/js/app.js?v=<?=$_version;?>"></script>
-		<script type="text/javascript" src="<?=APP_URL;?>/assets/js/toast-dialog.js?v=<?=$_version;?>"></script>
-		<script type="text/javascript" src="<?=APP_URL;?>/assets/js/custom-select.js?v=<?=$_version;?>"></script>
+		<script type="text/javascript" src="<?=APP_URL;?>/assets/themes/<?=themeController::$current_theme;?>/script/app.js?v=<?=$_version;?>"></script>
+		<script type="text/javascript" src="<?=APP_URL;?>/assets/script/toast-dialog.js?v=<?=$_version;?>"></script>
+		<script type="text/javascript" src="<?=APP_URL;?>/assets/script/custom-select.js?v=<?=$_version;?>"></script>
 
 		<script type="text/javascript">
 			$(document).ready(() => {

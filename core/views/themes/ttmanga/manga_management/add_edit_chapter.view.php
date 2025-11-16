@@ -100,7 +100,7 @@
 <input id="input-upload-image" accept="image/*" type="file" style="display: none;">
 <input id="input-upload-multiple-image" accept="image/*" type="file" multiple style="display: none;">
 
-<script type="text/javascript" src="<?=assets('js/jquery-sortable.js');?>"></script>
+<script type="text/javascript" src="<?=assets('script/jquery-sortable.js');?>"></script>
 
 <script type="text/javascript">
 	const URL_GET_CHAPTER = '<?=appendUrlApi(RouteMap::get('tool_leech', ['block' => toolLeechController::BLOCK_GET_CHAPTER]));?>';
@@ -632,4 +632,4 @@
 
 </script>
 
-<?=themeController::load_js('js/tool-reupload.js');?>
+<?=themeController::load_js('script/tool-reupload.js');?>

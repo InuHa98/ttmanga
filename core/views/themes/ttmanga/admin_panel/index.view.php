@@ -70,6 +70,6 @@ echo themeController::load_css('css/admin_panel.css');
 	</div>
 </div>
 
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/form-validator.js?v=<?=$_version;?>"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/form-validator.js?v=<?=$_version;?>"></script>
 
 <?php View::render_theme('layout.footer'); ?>

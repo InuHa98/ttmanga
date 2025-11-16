@@ -234,7 +234,7 @@
   position: absolute;
   left: 28px;
   top: 60px;
-  bottom: 28px;
+  bottom: 18px;
   width: 30px;
   border-style: solid;
   border-color: #f0f2f5;
@@ -250,7 +250,9 @@
   color: #050505;
 }
 .section-comment .comment-container .comment-wrapper__body-action {
-  margin-left: 5px;
+  position: absolute;
+  right: 0;
+  top: -5px;
 }
 .section-comment .comment-container .comment-wrapper__body-text {
   display: inline-block;
@@ -266,6 +268,7 @@
   word-break: break-word;
   font-weight: 600;
   font-size: 1.1rem;
+  padding-right: 30px;
 }
 .section-comment .comment-container .comment-wrapper__body-text .username a:hover {
   text-decoration: underline;
@@ -285,8 +288,7 @@
   font-size: 1rem;
 }
 .section-comment .comment-container .comment-wrapper__body-text .text {
-  display: inline-flex;
-  align-items: end;
+  display: inline-block;
   margin-top: 10px;
   padding: 10px 20px;
   background: #f8f9fa;
@@ -311,7 +313,7 @@
   align-items: center;
   margin-top: 8px;
   color: #65676b;
-  margin-left: 10px;
+  margin-left: 5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -356,6 +358,10 @@
 .section-comment .comment-container .comment-wrapper__reply.reverse {
   flex-direction: column-reverse;
 }
+.section-comment .comment-container .comment-wrapper__reply .has-reply::before,
+.section-comment .comment-container .comment-wrapper__reply .focus-reply::before {
+  display: none;
+}
 .section-comment .comment-container .comment-wrapper__reply .reply-hide-more {
   margin-bottom: 10px;
   color: #65676b;
@@ -379,7 +385,7 @@
   text-decoration: underline;
 }
 .section-comment .comment-container .comment-wrapper__reply .reply-show-more {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #65676b;
   cursor: pointer;
   white-space: nowrap;
@@ -440,9 +446,6 @@
                   border-bottom-width: 2px;
               }
               */
-}
-.section-comment .comment-container .comment-wrapper__reply .comment-item + .comment-item {
-  margin-top: 10px;
 }
 .section-comment .comment-pagination {
   position: relative;

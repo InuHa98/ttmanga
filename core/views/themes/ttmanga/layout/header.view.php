@@ -52,10 +52,10 @@ if(isset($_chapter_id)) {
 		<link rel="shortcut icon" type="image/x-icon" href="<?=APP_URL;?>/assets/favico.ico">
 
 		<link rel="stylesheet" type="text/css" href="<?=APP_URL;?>/assets/css/font-awesome/css/all.css?v=<?=$_version;?>" />
-		<link rel="stylesheet" type="text/css" href="<?=APP_URL;?>/assets/styles/<?=themeController::$current_theme;?>/css/app.css?v=<?=$_version;?>" />
+		<link rel="stylesheet" type="text/css" href="<?=APP_URL;?>/assets/themes/<?=themeController::$current_theme;?>/css/app.css?v=<?=$_version;?>" />
 
-		<script type="text/javascript" src="<?=APP_URL;?>/assets/js/jquery-3.4.1.min.js?v=<?=$_version;?>"></script>
-		<script type="text/javascript" src="<?=APP_URL;?>/assets/js/main.js?v=<?=$_version;?>"></script>
+		<script type="text/javascript" src="<?=APP_URL;?>/assets/script/jquery-3.4.1.min.js?v=<?=$_version;?>"></script>
+		<script type="text/javascript" src="<?=APP_URL;?>/assets/script/main.js?v=<?=$_version;?>"></script>
 	</head>
 	<body>
 

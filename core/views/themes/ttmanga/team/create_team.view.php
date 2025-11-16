@@ -90,7 +90,7 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/form-validator.js?v=<?=$_version;?>"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/form-validator.js?v=<?=$_version;?>"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {

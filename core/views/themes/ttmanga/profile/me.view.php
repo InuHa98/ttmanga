@@ -116,11 +116,11 @@
 <input id="input-upload-image" type="file" accept="image/*" style="display: none;">
 
 <link rel="stylesheet" href="<?=APP_URL;?>/assets/css/cropper.css?v=<?=$_version;?>">
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/cropper.js?v=<?=$_version;?>"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/cropper.js?v=<?=$_version;?>"></script>
 
 
-<?=themeController::load_js('js/avatar-cover-upload.js');?>
+<?=themeController::load_js('script/avatar-cover-upload.js');?>
 
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/form-validator.js?v=<?=$_version;?>"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/form-validator.js?v=<?=$_version;?>"></script>
 
 <?php View::render_theme('layout.footer'); ?>

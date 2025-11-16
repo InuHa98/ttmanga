@@ -127,18 +127,42 @@ class commentController {
 
 		if(Comment::create($data) == true)
 		{
-			if(isset($comment) && $comment['user_id'] != Auth::$data['id']) {
+
+			if(isset($comment)) {
+				if ($comment['user_id'] != Auth::$data['id']) {
+					Notification::create([
+						'user_id' => $comment['user_id'],
+						'from_user_id' => Auth::$data['id'],
+						'type' => Notification::TYPE_COMMENT_REPLY,
+						'data' => [
+							'manga_id' => $manga['id'],
+							'chapter_id' => $chapter_id,
+							'comment_id' => $comment['id']
+						]
+					]);
+				}
+			}
+			preg_match_all('#\[tag=([0-9]+)\]@([^[]+)\[/tag\]#is', $text, $m);
+			if (isset($m[1])) {
+				$ids_user_tag = [];
+				foreach($m[1] as $user_id) {
+					if (isset($comment) && $comment['user_id'] == $user_id) {
+						continue;
+					}
+					$ids_user_tag[] = $user_id;
+				}
 				Notification::create([
-					'user_id' => $comment['user_id'],
+					'user_id' => $ids_user_tag,
 					'from_user_id' => Auth::$data['id'],
-					'type' => Notification::TYPE_COMMENT_REPLY,
+					'type' => Notification::TYPE_COMMENT_TAG,
 					'data' => [
 						'manga_id' => $manga['id'],
 						'chapter_id' => $chapter_id,
-						'comment_id' => $comment['id']
+						'comment_id' => $comment['id'] ?? Comment::$insert_id
 					]
 				]);
 			}
+
 			echo json_api(200, 'Successfully'); #edit_lang
 			exit;
 		}
@@ -162,7 +186,7 @@ class commentController {
 			exit;
 		}
 
-		$comment = Comment::get($id);
+		$comment = Comment::get(['id' => $id]);
 		if(!$comment)
 		{
 			echo json_api(403, 'Bình luận không tồn tại'); #edit_lang
@@ -181,6 +205,31 @@ class commentController {
 			'text' => $text
 		]))
 		{
+			preg_match_all('#\[tag=([0-9]+)\]@([^[]+)\[/tag\]#is', $text, $m);
+			if (isset($m[1])) {
+				$ids_user_tag = [];
+				$ids_user_tag_old = [];
+				preg_match_all('#\[tag=([0-9]+)\]@([^[]+)\[/tag\]#is', $comment['text'], $m_old);
+				foreach($m_old[1] as $user_id) {
+					$ids_user_tag_old[] = $user_id;
+				}
+
+				foreach($m[1] as $user_id) {
+					if (!in_array($user_id, $ids_user_tag_old)) {
+						$ids_user_tag[] = $user_id;
+					}
+				}
+				Notification::create([
+					'user_id' => $ids_user_tag,
+					'from_user_id' => Auth::$data['id'],
+					'type' => Notification::TYPE_COMMENT_TAG,
+					'data' => [
+						'manga_id' => $comment['manga_id'],
+						'chapter_id' => $comment['chapter_id'],
+						'comment_id' => $comment['id']
+					]
+				]);
+			}
 			echo json_api(200, 'Cập nhật bình luận thành công'); #edit_lang
 			exit;	
 		}

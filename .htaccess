@@ -13,3 +13,15 @@ RewriteRule ^image/([A-z0-9]+)/([0-9]+)/(.*)\.jpg$ get-image.php?hash=$1&t=$2&co
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [L]
+
+# Không cache HTML/CSS/JS
+<FilesMatch "\.(html|css|js|json|scss)$">
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires 0
+</FilesMatch>
+
+# Cache hình ảnh
+<FilesMatch "\.(png|jpe?g|gif|webp|svg)$">
+  Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>

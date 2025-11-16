@@ -75,7 +75,7 @@ class themeController {
 			return null;
 		}
 
-		return '<link rel="stylesheet" type="'.$type.'" href="'.APP_URL.'/assets/styles/'.self::$current_theme.'/'.trim($path, '/').'?v='.time().'" />';
+		return '<link rel="stylesheet" type="'.$type.'" href="'.APP_URL.'/assets/themes/'.self::$current_theme.'/'.trim($path, '/').'?v='.time().'" />';
 	}
 
 	public static function load_js($path = null, $type = "text/javascript")
@@ -85,7 +85,7 @@ class themeController {
 			return null;
 		}
 
-		return '<script type="'.$type.'" src="'.APP_URL.'/assets/styles/'.self::$current_theme.'/'.trim($path, '/').'?v='.time().'"></script>';
+		return '<script type="'.$type.'" src="'.APP_URL.'/assets/themes/'.self::$current_theme.'/'.trim($path, '/').'?v='.time().'"></script>';
 	}
 }
 

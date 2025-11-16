@@ -423,6 +423,7 @@ li {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-transform: lowercase;
   }
 }
 
@@ -3127,6 +3128,12 @@ li {
         border: 2px solid #fff;
         border-radius: 10px;
         box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+        &::before {
+          border-radius: 0;
+        }
+        img {
+          border-radius: 0;
+        }
       }
       .name {
         margin-left: 10px;
@@ -3623,6 +3630,10 @@ ul.sort-chapter-box {
       background: #9e9e9e;
     }
   }
+}
+
+.mce-tag-username {
+  margin-right: 5px;
 }
 
 @import "app/color";

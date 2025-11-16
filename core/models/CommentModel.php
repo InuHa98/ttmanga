@@ -136,18 +136,22 @@ class Comment extends Model {
 			$first_name = User::get_first_charname($user);
 			$data_item = [
 				'id' => $item['id'],
+				'refid' => $item['refid'],
 				'profile' => RouteMap::get('profile', ['id' => $item['user_id']]),
 				'avatar' => User::get_avatar($user),
 				'first_name' => $first_name,
 				'bg_avatar' => User::get_color_avatar($first_name),
 				'color' => $item['user_role_color'],
+				'user_id' => $user['id'],
 				'username' => User::get_display_name($user),
+				'username_raw' => _echo($user['name'] ? $user['name'] : $user['username']),
 				'text' => _echo($item['text'], true, true),
 				'chapter' => null,
 				'reply' => $item['reply'],
 				'time' => _time($item['created_at']),
 				'edit' => _time($item['updated_at']),
-				'is_reply' => (Auth::$isLogin && $item['refid'] == 0) ? true : false,
+				'is_reply' => (Auth::$isLogin && $item['refid'] == 0),
+				'is_own' => (Auth::$isLogin && $user['id'] == Auth::$data['id']),
 				'is_edit' => false,
 				'is_delete' => false,
 				'reason_delete' => false

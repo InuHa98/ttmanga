@@ -274,9 +274,9 @@ $manga_cover = _echo($manga['cover']);
 	</div>
 </div>
 
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/tinymce/tinymce.min.js?v=<?=$_version;?>"></script>
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/form-validator.js?v=<?=$_version;?>"></script>
-<?=themeController::load_js('js/comments.js');?>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/tinymce/tinymce.min.js?v=<?=$_version;?>"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/form-validator.js?v=<?=$_version;?>"></script>
+<?=themeController::load_js('script/comments.js');?>
 
 <script type="text/javascript">
 

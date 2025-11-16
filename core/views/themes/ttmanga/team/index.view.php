@@ -129,8 +129,8 @@ echo themeController::load_css('css/team.css');
 <?php if($is_own): ?>
 <input id="input-upload-image" type="file" accept="image/*" style="display: none;">
 <link rel="stylesheet" href="<?=APP_URL;?>/assets/css/cropper.css?v=<?=$_version;?>">
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/cropper.js?v=<?=$_version;?>"></script>
-<?=themeController::load_js('js/avatar-cover-upload.js');?>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/cropper.js?v=<?=$_version;?>"></script>
+<?=themeController::load_js('script/avatar-cover-upload.js');?>
 <?php endif; ?>
 
 <?php View::render_theme('layout.footer'); ?>

@@ -309,7 +309,7 @@
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v23.0&appId=1545946785646444"></script>
 
 <link rel="stylesheet" href="<?=APP_URL;?>/assets/css/owl.carousel.css?v=<?=$_version;?>">
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/owl.carousel.min.js?v=<?=$_version;?>"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/owl.carousel.min.js?v=<?=$_version;?>"></script>
 <script type="text/javascript">
 	$('.owl-carousel').owlCarousel({
 		loop: false,

@@ -66,7 +66,7 @@ else if($success)
 
 
 <link rel="stylesheet" href="<?=assets('css/colorPicker.css');?>">
-<script type="text/javascript" src="<?=assets('js/colorPicker.js');?>"></script>
+<script type="text/javascript" src="<?=assets('script/colorPicker.js');?>"></script>
 
 <script type="text/javascript">
     (function() {

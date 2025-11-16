@@ -57,7 +57,7 @@ else if($success)
 	</form>
 
 
-<script type="text/javascript" src="<?=assets('js/jquery-sortable.js');?>"></script>
+<script type="text/javascript" src="<?=assets('script/jquery-sortable.js');?>"></script>
 
 <script type="text/javascript">
     (function() {

@@ -206,7 +206,7 @@ $insertHiddenToken = Security::insertHiddenToken();
 	<input id="_action" type="hidden" name="<?=notificationController::NAME_FORM_ACTION;?>" value="" />
 </form>
 
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/form-validator.js?v=<?=$_version;?>"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/form-validator.js?v=<?=$_version;?>"></script>
 
 <script type="text/javascript">
 

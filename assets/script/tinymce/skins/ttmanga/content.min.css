@@ -36,6 +36,11 @@ img.comment-smiley-icon {
   max-width: 60px;
   max-height: 60px;
 }
+.mce-tag-username {
+  font-weight: 600;
+  color: #03a9f4;
+}
+
 .word-wrap {
   word-wrap: break-word;
   -ms-word-break: break-all;

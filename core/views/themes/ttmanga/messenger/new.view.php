@@ -80,7 +80,7 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="<?=APP_URL;?>/assets/js/form-validator.js?v=<?=$_version;?>"></script>
+<script type="text/javascript" src="<?=APP_URL;?>/assets/script/form-validator.js?v=<?=$_version;?>"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 
@@ -138,8 +138,10 @@
                                         <div class="user-avatar" data-text="${user.first_name}" style="--bg-avatar: ${user.bg_avatar}">
                                             <img src="${user.avatar}">
                                         </div>
-                                        <div class="user-display-name">${user.display_name}</siv>
-                                        <div class="user-username">@${user.username}</siv>
+                                        <div>
+                                            <div class="user-display-name">${user.display_name}</div>
+                                            <div class="user-username">@${user.username}</div>
+                                        </div>
                                     </div>
                                 </li>`);
                             });

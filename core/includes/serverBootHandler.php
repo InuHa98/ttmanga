@@ -33,7 +33,7 @@ class serverBootHandler {
 	public static function boot_view()
 	{
 
-		View::addData('_version', time());
+		View::addData('_version', env('APP_VERSION'));
 
 		$genres = [];
 		foreach(Genres::list() as $genre)

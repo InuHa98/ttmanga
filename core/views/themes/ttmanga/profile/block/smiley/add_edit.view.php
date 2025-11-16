@@ -61,16 +61,24 @@ else if($success)
 
 
 <link rel="stylesheet" href="<?=assets('css/draggable-list.css');?>">
-<script type="text/javascript" src="<?=assets('js/draggable-list.js');?>"></script>
+<script type="text/javascript" src="<?=assets('script/jquery-sortable.js');?>"></script>
 
 <script type="text/javascript">
     (function() {
         $(document).ready(function() {
 
-            $.DraggableListJS('.smiley-edit-box', {
-                handle: true,
-                grid: false,
-                auto_index: false
+            $('.smiley-edit-box').sortable({
+                scroll: true,
+                scrollSensitivity: 60,
+                scrollSpeed: 10,
+                forceFallback: true,
+                swap: false,
+                invertSwap: true,
+                swapThreshold: 0.65,
+                animation: 150,
+                swapClass: 'swap-highlight',
+                ghostClass: 'dragging-item',
+                handle: '.handle-drag',
             });
 
             $('[role="btn-add-input"]').on('click', function() {

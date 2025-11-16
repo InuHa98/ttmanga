@@ -195,63 +195,65 @@
 						<a class="btn btn--small btn--info" href="<?=RouteMap::get('manga_management', ['action' => mangaManagementController::ACTION_NEW_CHAPTER, 'id' => $manga['id']]);?>"><i class="fas fa-plus"></i> Thêm chương mới</a>
 					</div>
 				</div>
-				<div class="chapter-list mt-0 p-0 mb-2 table-scroll">
+				<div class="chapter-list mt-0 p-0 mb-2">
 				<?php if($chapters): ?>
-					<table>
-						<tbody>
-							<tr>
-								<th>
-									<span class="form-check">
-										<input type="checkbox" id="multiple_selected_all">
-										<label for="multiple_selected_all"></label>
-									</span>
-								</th>
-								<th></th>
-								<th width="100%">Tên chương</th>
-								<th>Trạng thái</th>
-								<th>Đăng bởi</th>
-								<th class="date">Ngày đăng</th>
-								<th></th>
-							</tr>
-						<?php foreach($chapters as $val):
-							    $uploader = [
-									'id' => $val['user_upload'],
-									'name' => $val['uploader_name'],
-									'username' => $val['uploader_username'],
-									'avatar' => $val['uploader_avatar'],
-									'user_ban' => $val['uploader_ban_id'],
-									'role_color' => $val['uploader_role_color']
-								];
-						?>
-							<tr data-id="<?=$val['id'];?>">
-								<td>
-									<div class="form-check <?=(!mangaManagementController::is_own_chapter($val) ? 'disabled' : null);?>">
-										<input type="checkbox" role="multiple_selected" name="<?=mangaManagementController::INPUT_ID;?>[]" value="<?=$val['id'];?>" id="label_<?=$val['id'];?>">
-										<label for="label_<?=$val['id'];?>"></label>
-									</div>
-								</td>
-								<td>
-									<a target="_blank" href="<?=RouteMap::get('chapter', ['id_manga' => $manga['id'], 'id_chapter' => $val['id']]);?>"><i class="fas fa-eye"></i></a>
-								</td>
-								<td class="chapter-name">
-									<a class="text-primary" href="<?=RouteMap::get('manga_management', ['action' => mangaManagementController::ACTION_EDIT_CHAPTER, 'id' => $val['id']]);?>"><?=_echo($val['name']);?></a>
-								</td>
-								<td class="nowrap align-center" role="status">--</td>
-								<td>
-									<a target="_blank" class="user-infomation" href="<?=RouteMap::get('profile', ['id' => $uploader['id']]);?>">
-										<?=render_avatar($uploader, null, true, true);?>
-									</a>
-								</td>
-								<td class="date"><?=date('d/m/Y', $val['created_at']);?></td>
-								<td>
-									<button class="btn btn--small btn--round btn--transparent text-danger <?=(!mangaManagementController::is_own_chapter($val) ? 'disabled' : null);?>" role="delete-chapter">
-										<i class="fas fa-times"></i> Xoá
-									</button>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-						</tbody>
-					</table>
+					<div class="table-scroll">
+						<table>
+							<tbody>
+								<tr>
+									<th>
+										<span class="form-check">
+											<input type="checkbox" id="multiple_selected_all">
+											<label for="multiple_selected_all"></label>
+										</span>
+									</th>
+									<th></th>
+									<th width="100%">Tên chương</th>
+									<th>Trạng thái</th>
+									<th>Đăng bởi</th>
+									<th class="date">Ngày đăng</th>
+									<th></th>
+								</tr>
+							<?php foreach($chapters as $val):
+									$uploader = [
+										'id' => $val['user_upload'],
+										'name' => $val['uploader_name'],
+										'username' => $val['uploader_username'],
+										'avatar' => $val['uploader_avatar'],
+										'user_ban' => $val['uploader_ban_id'],
+										'role_color' => $val['uploader_role_color']
+									];
+							?>
+								<tr data-id="<?=$val['id'];?>">
+									<td>
+										<div class="form-check <?=(!mangaManagementController::is_own_chapter($val) ? 'disabled' : null);?>">
+											<input type="checkbox" role="multiple_selected" name="<?=mangaManagementController::INPUT_ID;?>[]" value="<?=$val['id'];?>" id="label_<?=$val['id'];?>">
+											<label for="label_<?=$val['id'];?>"></label>
+										</div>
+									</td>
+									<td>
+										<a target="_blank" href="<?=RouteMap::get('chapter', ['id_manga' => $manga['id'], 'id_chapter' => $val['id']]);?>"><i class="fas fa-eye"></i></a>
+									</td>
+									<td class="chapter-name">
+										<a class="text-primary" href="<?=RouteMap::get('manga_management', ['action' => mangaManagementController::ACTION_EDIT_CHAPTER, 'id' => $val['id']]);?>"><?=_echo($val['name']);?></a>
+									</td>
+									<td class="nowrap align-center" role="status">--</td>
+									<td>
+										<a target="_blank" class="user-infomation" href="<?=RouteMap::get('profile', ['id' => $uploader['id']]);?>">
+											<?=render_avatar($uploader, null, true, true);?>
+										</a>
+									</td>
+									<td class="date"><?=date('d/m/Y', $val['created_at']);?></td>
+									<td>
+										<button class="btn btn--small btn--round btn--transparent text-danger <?=(!mangaManagementController::is_own_chapter($val) ? 'disabled' : null);?>" role="delete-chapter">
+											<i class="fas fa-times"></i> Xoá
+										</button>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+							</tbody>
+						</table>
+					</div>
 					<div class="pagination">
 						<?=html_pagination($pagination);?>
 					</div>
@@ -598,8 +600,10 @@
                                            			<div class="user-avatar" data-text="${o.first_name}" style="--bg-avatar: ${o.bg_avatar}">
                                                         <img src="${o.avatar}">
                                                     </div>
-                                                    <div class="user-display-name">${o.display_name}</siv>
-                                                    <div class="user-username">@${o.username}</siv>
+													<div>
+														<div class="user-display-name">${o.display_name}</div>
+														<div class="user-username">@${o.username}</div>
+													</div>
                                                 </div>
                                             </li>`);
                                         });
