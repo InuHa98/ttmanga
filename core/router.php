@@ -99,6 +99,10 @@ Router::get(RouteMap::ROUTES['team'], function($name) {
 });
 
 ####### Comment #######
+Router::get(RouteMap::ROUTES['comments'], function() {
+	return Controller::load('commentController@all');
+});
+
 Router::group(RouteMap::ROUTES['comment'], function() {
 
 	Router::get('/', function() {

@@ -264,7 +264,12 @@
 					</div>
 				</div>
 			</div>
-			<div class="_title border-left mt-0">Bình luận mới</div>
+			<div class="_title border-left mt-0">
+				<div class="d-flex justify-content-between align-items-center">
+					<span>Bình luận mới</span>
+					<a href="<?=RouteMap::get('comments');?>">Xem tất cả »</a>
+				</div>
+			</div>
 			<div class="section-comment">
 				<div class="comment-container p-0 mt-4">
 				<?php foreach($new_comments as $val):

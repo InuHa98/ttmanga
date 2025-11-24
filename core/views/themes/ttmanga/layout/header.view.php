@@ -80,46 +80,48 @@ if(isset($_chapter_id)) {
 			<?php if(UserPermission::isAccessAdminPanel()): ?>
 				<li class="side-nav-menu__items-link">
 					<a href="<?=RouteMap::get('admin_panel');?>">
-						<i class="fas fa-cogs"></i>
-						Admin Panel
+						<span><i class="fas fa-cogs"></i> Admin Panel</span>
+						<?php if (isset($_count_approval_team) && $_count_approval_team > 0): ?>
+							<span class="count-new-item"><?=$_count_approval_team;?></span>
+						<?php endif; ?>
 					</a>
 				</li>
 			<?php endif; ?>
 				<li class="side-nav-menu__items-link">
 					<a href="<?=RouteMap::get('profile', ['id' => 'me']);?>">
-						<i class="fa fa-user"></i>
-						Tài Khoản
+						<span><i class="fa fa-user"></i> Tài Khoản</span>
 					</a>
 				</li>
 				<li class="side-nav-menu__items-link">
 					<a href="<?=RouteMap::get('history');?>">
-						<i class="fa fa-history"></i>
-						Xem Gần Đây
+						<span><i class="fa fa-history"></i> Xem Gần Đây</span>
 					</a>							
 				</li>
 				<li class="side-nav-menu__items-link">
 					<a href="<?=RouteMap::get('bookmark');?>">
-						<i class="fa fa-bookmark"></i>
-						Truyện Theo Dõi
+						<span><i class="fa fa-bookmark"></i> Truyện Theo Dõi</span>
+						<?php if ($_count_bookmark > 0): ?>
+							<span class="count-new-item"><?=$_count_bookmark;?></span>
+						<?php endif; ?>
 					</a>							
 				</li>
 				<li class="side-nav-menu__items-link">
 					<a href="<?=RouteMap::get('my_team');?>">
-						<i class="fas fa-layer-group"></i>
-						Nhóm dịch của tôi
+						<span><i class="fas fa-layer-group"></i> Nhóm dịch của tôi</span>
+						<?php if ($_count_team_error + $_count_team_member_approval > 0): ?>
+							<span class="count-new-item"><?=$_count_team_error + $_count_team_member_approval;?></span>
+						<?php endif; ?>
 					</a>
 				</li>
 		<?php else: ?>
 				<li class="side-nav-menu__items-link">
 					<a href="<?=RouteMap::get('login');?>">
-						<i class="fas fa-sign-in-alt"></i>
-						Đăng nhập
+						<span><i class="fas fa-sign-in-alt"></i> Đăng nhập</span>
 					</a>
 				</li>
 				<li class="side-nav-menu__items-link">
 					<a href="<?=RouteMap::get('register');?>">
-						<i class="fa fa-user-plus"></i>
-						Đăng kí
+						<span><i class="fa fa-user-plus"></i> Đăng kí</span>
 					</a>
 				</li>
 		<?php endif; ?>
@@ -147,8 +149,7 @@ if(isset($_chapter_id)) {
 				<li class="side-nav-menu__items-group">
 					<div class="side-nav-menu__items-group__title">
 						<span class="group_text">
-							<i class="fas fa-list"></i>
-							Danh sách manga
+							<span><i class="fas fa-list"></i> Danh sách manga</span>
 						</span>
 						<span class="group_arrow">
 							<i class="fas fa-chevron-right"></i>
@@ -174,7 +175,10 @@ if(isset($_chapter_id)) {
 				</li>
 				<li class="side-nav-menu__items-link">
 					<a class="p-3" href="<?=$url_report;?>">
-						<i class="fas fa-exclamation-triangle"></i> Báo lỗi
+						<span><i class="fas fa-exclamation-triangle"></i> Báo lỗi</span>
+						<?php if ($_count_all_error > 0): ?>
+							<span class="count-new-item"><?=$_count_all_error;?></span>
+						<?php endif; ?>
 					</a>
 				</li>
 			</ul>
@@ -185,6 +189,9 @@ if(isset($_chapter_id)) {
 				<div class="section-header__wrapper">
 					<div id="btn_sidenav-menu" class="section-header__button">
 						<i class="fas fa-bars"></i>
+						<?php if ($_count_all_error + $_count_approval_team + $_count_team_error + $_count_team_member_approval > 0): ?>
+							<span class="count-new-item"><?=$_count_all_error + $_count_approval_team + $_count_team_error + $_count_team_member_approval;?></span>
+						<?php endif; ?>
 					</div>
 
 					<a class="section-header__logo" href="<?=APP_URL;?>">
@@ -196,7 +203,7 @@ if(isset($_chapter_id)) {
 							<a href="<?=RouteMap::get('manga');?>">Danh sách</a>
 						</li>
 						<li <?=Router::$current_route == 'report' ? 'class="active"' : null;?>>
-							<a href="<?=$url_report;?>">Báo lỗi</a>
+							<a href="<?=$url_report;?>">Báo lỗi<?=($_count_all_error > 0 ? ' <span class="count-new-item">'.$_count_all_error.'</span>' : '');?></a>
 						</li>
 					</ul>
 
@@ -289,18 +296,7 @@ if(isset($_chapter_id)) {
 											<div class="bookmark-text">Có <strong><?=number_format($_count_approval_team, 0, ',', '.');?></strong> nhóm dịch mới cần xét duyệt</div>
 										</a>
 									<?php endif; ?>
-									<?php if($_count_bookmark > 0):
-										$lst_bookmark = Bookmark::select([
-											'<core_mangas.id>',
-											'<core_mangas.name>',
-											'<core_mangas.image>',
-											'<core_chapters.name> AS <name_last_chapter>',
-											'<core_chapters.created_at> AS <created_last_chapter>'
-										])::list([
-											'is_read' => Bookmark::TYPE_UNREAD,
-											'user_id' => Auth::$id
-										]);
-									?>
+									<?php if($_count_bookmark > 0):?>
 										<a class="notification-bookmark" href="<?=RouteMap::get('bookmark', ['type' => 'new']);?>">
 											<div class="bookmark-icon">
 												<i class="fas fa-bookmark"></i>
@@ -308,7 +304,7 @@ if(isset($_chapter_id)) {
 											<div class="bookmark-text"><strong><?=number_format($_count_bookmark, 0, ',', '.');?></strong> truyện đang theo dõi có chương mới</div>
 										</a>
 										<ul class="notification-list">
-										<?php foreach($lst_bookmark as $o): ?>
+										<?php foreach($_lst_bookmark as $o): ?>
 											<li>
 												<a class="notification-list__item" href="<?=RouteMap::get('manga', ['id' => $o['id']]);?>">
 													<img class="manga-image" src="<?=_echo($o['image']);?>" />
@@ -388,39 +384,42 @@ if(isset($_chapter_id)) {
 							<?php if(UserPermission::isAccessAdminPanel()): ?>
 								<li>
 									<a class="color-green" href="<?=RouteMap::get('admin_panel');?>">
-										<i class="fas fa-cogs"></i>
-										Admin Panel
+										<span><i class="fas fa-cogs"></i> Admin Panel</span>
+										<?php if (isset($_count_approval_team) && $_count_approval_team > 0): ?>
+											<span class="count-new-item"><?=$_count_approval_team;?></span>
+										<?php endif; ?>
 									</a>
 								</li>
 							<?php endif; ?>
 								<li>
 									<a href="<?=RouteMap::get('profile', ['id' => 'me']);?>">
-										<i class="fa fa-user"></i>
-										Tài Khoản
+										<span><i class="fa fa-user"></i> Tài Khoản</span>
 									</a>							
 								</li>
 								<li>
 									<a href="<?=RouteMap::get('history');?>">
-										<i class="fa fa-history"></i>
-										Xem Gần Đây
+										<span><i class="fa fa-history"></i> Xem Gần Đây</span>
 									</a>							
 								</li>
 								<li>
 									<a href="<?=RouteMap::get('bookmark');?>">
-										<i class="fa fa-bookmark"></i>
-										Truyện Theo Dõi
+										<span><i class="fa fa-bookmark"></i> Truyện Theo Dõi</span>
+										<?php if ($_count_bookmark > 0): ?>
+											<span class="count-new-item"><?=$_count_bookmark;?></span>
+										<?php endif; ?>
 									</a>							
 								</li>
 								<li>
 									<a href="<?=RouteMap::get('my_team');?>">
-										<i class="fas fa-layer-group"></i>
-										Nhóm dịch của tôi
+										<span><i class="fas fa-layer-group"></i> Nhóm dịch của tôi</span>
+										<?php if ($_count_team_error + $_count_team_member_approval > 0): ?>
+											<span class="count-new-item"><?=$_count_team_error + $_count_team_member_approval;?></span>
+										<?php endif; ?>
 									</a>
 								</li>
 								<li>
 									<a href="<?=RouteMap::get('logout');?>">
-										<i class="fa fa-power-off"></i>
-										Thoát
+										<span><i class="fa fa-power-off"></i> Thoát</span>
 									</a>							
 								</li>
 							</ul>

@@ -24,7 +24,13 @@ func trim(this js.Value, args []js.Value) any {
 	href = strings.Split(href, "#")[0]
 	re := regexp.MustCompile(`^(.*)/([0-9]+)\?(.*?)$`)
 	host := re.ReplaceAllString(href, `$1/$2`)
-	now := time.Now().Unix()
+	now := time.Now().Unix() + func() int64 {
+		v := js.Global().Get("__time_delta")
+		if v.Type() == js.TypeNumber {
+			return int64(v.Int())
+		}
+		return 0
+	}()/1000
 	sum := md5.Sum([]byte(fmt.Sprintf("%s---%d", host, now)))
 	hash := hex.EncodeToString(sum[:])
 

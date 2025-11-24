@@ -19,7 +19,7 @@ class Bookmark extends Model {
 	];
 	protected static $order_by = [
 		'<{table}.is_read>' => 'ASC',
-		'<core_mangas.name>' => 'ASC'
+		'<core_chapters.created_at>' => 'DESC'
 	];
 
 	protected static $where = [

@@ -41,7 +41,7 @@ class homeController {
 
 		$new_comments = Comment::list([
 			'ORDER' => [
-				'id' => 'DESC'
+				'created_at' => 'DESC'
 			],
 			'LIMIT' => 10
 		]);

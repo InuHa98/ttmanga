@@ -341,7 +341,11 @@ $manga_cover = _echo($manga['cover']);
 			comment_id: <?=Request::get(InterFaceRequest::COMMENT, 0);?>,
 			ajax_url: "<?=RouteMap::get('comment');?>",
 			editor_theme: 'ttmanga',
-			meme_sources: <?=Smiley::build_meme_source();?>
+			meme_sources: <?=Smiley::build_meme_source();?>,
+			taguser: {
+				api_url: '<?=appendUrlApi(RouteMap::get('ajax', ['name' => ajaxController::SEARCH_USER]));?>',
+				delimiter: '@'
+			}
 		});
 
 

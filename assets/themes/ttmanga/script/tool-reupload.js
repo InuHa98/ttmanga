@@ -9,7 +9,7 @@ $(document).ready(() => {
             <div class="form-control">
                 <input class="form-input" placeholder="https://">
                 <button type="button" class="btn btn--info" role="btn-get-link">Get link</button>
-                <div class="label-desc">Hiện tại chỉ hỗ trợ: foxtruyen, truyenqq, mangadex, mto, hangtruyen, minotruyen</div>
+                <div class="label-desc">Hiện tại chỉ hỗ trợ: foxtruyen, truyenqq, mangadex, mto, hangtruyen, minotruyen, otakusic</div>
             </div>
         </div>
         <div class="dialog-label mt-3">Link ảnh:</div>

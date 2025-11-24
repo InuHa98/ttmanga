@@ -19,6 +19,7 @@ class RouteMap {
 		'chapter' => '/Manga/{id_manga(\d+)}/Chapter/{id_chapter(\d+)}',
 		'search_manga' => '/Manga/search',
 		'comment' => '/Comment',
+		'comments' => '/Comments',
 		'team' => '/Team/{name}',
 		'messenger' => '/Messenger/{block(\w+)?}/{id(seen|unseen|\d+)?}',
 		'search' => 'Search',

@@ -41,7 +41,7 @@ class GoogleUpload
 		}
 	}
 
-	public static function bytesToMB($bytes, $precision = 6) {
+	public static function bytesToMB($bytes, $precision = 2) {
 		return number_format($bytes / 1048576, $precision);
 	}
 
@@ -431,7 +431,13 @@ class GoogleUpload
 	    $imgData = ob_get_contents();
 		ob_end_clean();
 
-	    return $imgData;
+	    return [
+	    	'data' => $imgData,
+	    	'size' => [
+	    		$newWidth,
+	    		$newHeight
+	    	]
+	    ];
 	}
 
 	public function resize_from_path($path = null)
@@ -800,6 +806,20 @@ class GoogleUpload
 			return self::ERROR_IMAGE;
 		}
 
+    	if($image_size['mime'] == 'image/webp')
+    	{
+    		$image_data = $this->convert_webp_to_jpg($image_data);
+    	}
+
+    	if($image_size[0] > $this->options['max_size'] || $image_size[1] > $this->options['max_size'])
+		{
+			$resize = $this->resize_from_string($image_data, $image_size[0], $image_size[1]);
+			$image_data = $resize['data'];
+			$image_size[0] = $resize['size'][0];
+			$image_size[1] = $resize['size'][1];
+		}
+
+
 		if($this->options['check_size'] !== false && $this->options['check_size'] > 0)
 		{
 			if($image_size[0] < $this->options['check_size'])
@@ -826,14 +846,6 @@ class GoogleUpload
 		if (empty($image_size['mime'])) {
 			return self::ERROR_IMAGE;
 		}
-
-
-    	if($image_size['mime'] == 'image/webp')
-    	{
-    		$image_data = $this->convert_webp_to_jpg($image_data);
-    	}
-
-    	$image_data = $this->resize_from_string($image_data, $image_size[0], $image_size[1]);
 
 		$this->batchid = time();
 

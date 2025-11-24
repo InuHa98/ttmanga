@@ -107,7 +107,7 @@ class mangaManagementController {
 		}
 		$manga = is_array($manga_id) ? $manga_id : Manga::get(['id' => $manga_id]);
 		$team = self::$team ?? Team::get(['id' => Auth::$data['team_id']]);
-		return UserPermission::isAdmin() || UserPermission::has('admin_manga_edit') || $team['own_id'] == Auth::$data['id'] || $manga['user_upload'] == Auth::$data['id'];
+		return UserPermission::isAdmin() || UserPermission::has('admin_manga_edit') || ($team && $team['own_id'] == Auth::$data['id']) || $manga['user_upload'] == Auth::$data['id'];
 	}
 
 	public static function is_own_chapter($chapter_id) {
@@ -116,7 +116,7 @@ class mangaManagementController {
 		}
 		$chapter = is_array($chapter_id) ? $chapter_id : Chapter::get(['id' => $chapter_id]);
 		$team = self::$team ?? Team::get(['id' => Auth::$data['team_id']]);
-		return UserPermission::isAdmin() || UserPermission::has('admin_manga_edit') || $team['own_id'] == Auth::$data['id'] || $chapter['user_upload'] == Auth::$data['id'];
+		return UserPermission::isAdmin() || UserPermission::has('admin_manga_edit') || ($team && $team['own_id'] == Auth::$data['id']) || $chapter['user_upload'] == Auth::$data['id'];
 	}
 
 	private function detail($id) {
@@ -471,6 +471,7 @@ class mangaManagementController {
 		}
 
 		$insertHiddenToken = Security::insertHiddenToken();
+		$lst_genres = Genres::list();
 
 		return [
 			'title' => 'Thêm truyện mới', #edit_lang,
@@ -478,6 +479,7 @@ class mangaManagementController {
 			'data' => compact(
 				'success',
 				'error',
+				'lst_genres',
 				'name',
 				'name_other',
 				'author',
@@ -608,13 +610,14 @@ class mangaManagementController {
 		}
 
 		$insertHiddenToken = Security::insertHiddenToken();
-
+		$lst_genres = Genres::list();
 		return [
 			'title' => 'Chỉnh sửa truyện: '.$manga['name'], #edit_lang,
 			'view' => 'manga_management.add_edit_manga',
 			'data' => compact(
 				'success',
 				'error',
+				'lst_genres',
 				'manga',
 				'name',
 				'name_other',

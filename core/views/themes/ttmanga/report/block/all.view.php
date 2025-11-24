@@ -20,6 +20,7 @@
                 <th class="align-center">Trạng thái</th>
                 <th>Người báo lỗi</th>
                 <th>Người xử lý</th>
+                <th>Ngày báo lỗi</th>
             </tr>
         </thead>
         <tbody>
@@ -98,6 +99,7 @@
             </a>
         <?php endif; ?>
         </td>
+        <td class="nowrap"><?=_time($report['created_at']);?></td>
     </tr>
 <?php endforeach; ?>
         </tbody>

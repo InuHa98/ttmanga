@@ -443,6 +443,35 @@ trait Trait_profile {
         redirect_route('profile', ['id' => 'me', 'block' => profilecontroller::BLOCK_SMILEY]);
     }
 
+    public static function block_comments($user)
+    {
+
+        if(!$user)
+        {
+            return null;
+        }
+
+        $where = [
+            'user_id' => $user['id']
+        ];
+
+		$count = Comment::count($where);
+
+        new Pagination($count, App::$pagination_limit);
+		$pagination = Pagination::get();
+
+        $lst_comment = Comment::list(array_merge($where, [
+            'LIMIT' => [
+                $pagination['start'], $pagination['limit']
+            ]
+        ]));
+
+        return [
+            'view' => 'profile.block.comments',
+            'data' => compact('count', 'lst_comment', 'pagination')
+        ];
+    }
+
     public static function block_manga_upload($user)
     {
 

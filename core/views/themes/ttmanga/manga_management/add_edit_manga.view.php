@@ -121,15 +121,15 @@
 					<div class="form-control">
 						<div class="genre-list">
 						<?php
-							foreach($_genres as $id => $name):
-								$is_include = isset($genres[$id]) && $genres[$id] == 1;
+							foreach($lst_genres as $o):
+								$is_include = isset($genres[$o['id']]) && $genres[$o['id']] == 1;
 						?>
-							<div class="state-btn <?=($is_include ? 'include' : null);?>">
-								<select class="required" name="<?=mangaManagementController::INPUT_GENRES;?>[<?=$id;?>]">
+							<div class="state-btn <?=($is_include ? 'include' : null);?>" title="<?=_echo($o['text']);?>">
+								<select class="required" name="<?=mangaManagementController::INPUT_GENRES;?>[<?=$o['id'];?>]">
 									<option value="0"></option>
 									<option value="1" <?=($is_include ? 'selected' : null);?>></option>
 								</select>
-								<label><?=_echo($name);?></label>
+								<label><?=_echo($o['name']);?></label>
 							</div>
 						<?php endforeach; ?>
 						</div>

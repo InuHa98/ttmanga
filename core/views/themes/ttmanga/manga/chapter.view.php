@@ -66,6 +66,16 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 		</div>
 	</div>
 
+	<div class="chapter-list__view">
+		<span class="label">Ngăn ảnh</span>
+		<div class="form-control">
+			<div class="form-switch">
+				<input type="checkbox" id="select-padding-mode" value="1" <?=($padding_mode == 1 ? 'checked' : null);?>>
+				<label for="select-padding-mode">Không ngăn cách ảnh</label>
+			</div>
+		</div>
+	</div>
+
 	<div class="chapter-list__team">
 		<span class="label">Nhóm dịch</span>
 		<select class="select-team js-custom-select w-100">
@@ -77,11 +87,11 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 	</div>
 	<ul class="chapter-list__items"><?=$chapter_list;?></ul>
 	<div class="chapter-list__navigation">
-		<a class="chapter-list__navigation-item <?=(!$url_pre_chapter ? 'disabled' : null);?>" href="<?=$url_pre_chapter;?>">
+		<a class="chapter-list__navigation-item <?=(!$url_pre_chapter ? 'disabled' : null);?>" id="btn-pre-chapter" href="<?=$url_pre_chapter;?>">
 			<i class="fas fa-chevron-double-left"></i>
 			<span>Chương trước</span>
 		</a>
-		<a class="chapter-list__navigation-item <?=(!$url_next_chapter ? 'disabled' : null);?>" href="<?=$url_next_chapter;?>">
+		<a class="chapter-list__navigation-item <?=(!$url_next_chapter ? 'disabled' : null);?>" id="btn-nxt-chapter" href="<?=$url_next_chapter;?>">
 			<span>Chương kế</span>
 			<i class="fas fa-chevron-double-right"></i>
 		</a>
@@ -134,7 +144,7 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 			$total_images = count($images);
 			for($i = 0; $i < $total_images; $i++)
 			{
-				echo '<p><img src="" /></p>';
+				echo '<p'.($padding_mode ? ' style="margin: 0 auto; line-height: 0"' : '').'><img src="" /></p>';
 			}
 		}
 		?>
@@ -250,7 +260,7 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 
 	const go = new Go();
 	(async () => {
-		const result = await WebAssembly.instantiateStreaming(fetch("<?=APP_URL;?>/assets/wasm/anti-ADBlock.wasm"), go.importObject);
+		const result = await WebAssembly.instantiateStreaming(fetch("<?=APP_URL;?>/assets/wasm/anti_ADBlock.wasm"), go.importObject);
 		go.run(result.instance);
 
 		var lstImages = <?=json_encode($images); ?>;
@@ -260,6 +270,7 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 		var class_select_page = '.select-page',
 			class_select_chapter = '.select-chapter',
 			class_select_team = '.select-team',
+			select_padding_mode = '#select-padding-mode',
 			select_read_mode = '#select-read-mode';
 
 		new Comment({
@@ -305,6 +316,11 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 		}).on('error', function() {
 
 			var srcImage = $(this).attr('src');
+			let retry = $(this).data('retry') || 0;
+			if (retry == 0) {
+				$(this).attr('src', window.trim(srcImage)).data('retry', ++retry);
+			}
+
 			if ($.inArray(srcImage, lstImagesLoaded) >= 0) {
 				let index = lstImagesLoaded.indexOf(srcImage);
 				if (index > -1) {
@@ -328,6 +344,20 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 		container_images.find('img[src=""]:first').attr('src', window.trim(lstImages[currImage++]));
 		container_images.find('img[src=""]:first').attr('src', window.trim(lstImages[currImage++]));
 
+
+		document.body.addEventListener("swiped-left", () => {
+			const href = $('#btn-nxt-chapter').attr('href');
+			if (href) {
+				window.location.href = href;
+			}
+		});
+
+		document.body.addEventListener("swiped-right", () => {
+			const href = $('#btn-pre-chapter').attr('href');
+			if (href) {
+				window.location.href = href;
+			}
+		});
 
 	<?php else: ?>
 
@@ -365,10 +395,8 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 		    let scrollTop;
 
 		    if (rect.height <= window.innerHeight) {
-		       
 		        scrollTop = window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2;
 		    } else {
-		      
 		        scrollTop = window.scrollY + rect.top - 30;
 		    }
 
@@ -380,13 +408,16 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 		function onImageLoad() {
 			$(this).removeClass('error');
 			icon_loading.hide();
-
 			scrollToImage();
 		}
 
 		function onImageError() {
 			$(this).addClass('error');
 			icon_loading.hide();
+			let retry = $(this).data('retry') || 0;
+			if (retry == 0) {
+				$(this).attr('src', window.trim($(this).attr('src'))).data('retry', ++retry);
+			}
 		}
 
 		function debounce(func, ms) {
@@ -416,11 +447,10 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 			current_image.show();
 			const temp_image = nxtImage || preImage || null
 			if (temp_image) {
-					temp_image
-						.off('load error')
-						.on('load', onImageLoad)
-						.on('error', onImageError);					
-				
+				temp_image
+					.off('load error')
+					.on('load', onImageLoad)
+					.on('error', onImageError);					
 				current_image.replaceWith(temp_image)
 				current_image = temp_image
 				if (temp_image[0].complete) {
@@ -432,34 +462,38 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 			}
 
 			current_image.off('click').on('click', function() {
-			if (!$(this).hasClass('error')) {
-				return debouncedNext();
-			}
-			
-			$(this).attr('src', window.trim($(this).attr('src')));
-		});
-
+				if (!$(this).hasClass('error')) {
+					return debouncedNext();
+				}
+				$(this).attr('src', window.trim($(this).attr('src')));
+			});
 			$(class_select_page).val(currImage).change()
-
 			msg_error.removeClass('show');
-
-			if ($.inArray(lstImages[currImage], lstImagesLoaded) < 0) {
-				lstImagesLoaded.push(lstImages[currImage]);
-			}
-
 			PreloadImage();
 		}
 
 		function PreloadImage()
 		{
+			const buildImage = (src) => {
+				return $('<img />').on('load', function() {
+					$(this).removeClass('error');
+				}).on('error', function() {
+					$(this).addClass('error');
+					let retry = $(this).data('retry') || 0;
+					if (retry == 0) {
+						$(this).attr('src', window.trim($(this).attr('src'))).data('retry', ++retry);
+					}
+				}).attr('src', window.trim(src));
+			};
+
 			if (typeof lstImages[currImage + 1] != "undefined")
 			{
-				nxtImage = $('<img />').attr('src', window.trim(lstImages[currImage + 1]));
+				nxtImage = buildImage(lstImages[currImage + 1]);
 			}
 
 			if (typeof lstImages[currImage - 1] != "undefined")
 			{
-				preImage = $('<img />').attr('src', window.trim(lstImages[currImage - 1]));
+				preImage = buildImage(lstImages[currImage - 1]);
 			}
 		} 
 
@@ -546,12 +580,18 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 
 	<?php endif; ?>
 
+		window.__time_delta = <?=$current_time;?> * 1000 -  Date.now();
 		$(document).ready(function() {
 
 			let background = null;
 
 			$(select_read_mode).on('change', function() {
 				document.cookie = "<?=App::COOKIE_READ_MODE;?>=" + ($(this).is(':checked') ? 1 : 0) + "; expires=Thu, 2 Aug <?=(date('Y') + 10);?> 20:47:11 UTC;path=/";
+				window.location.reload();
+			});
+
+			$(select_padding_mode).on('change', function() {
+				document.cookie = "<?=App::COOKIE_PADDING_MODE;?>=" + ($(this).is(':checked') ? 1 : 0) + "; expires=Thu, 2 Aug <?=(date('Y') + 10);?> 20:47:11 UTC;path=/";
 				window.location.reload();
 			});
 
@@ -615,7 +655,6 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 				if (!$(this).hasClass('active')) {
 					location.href = $(this).data('id');
 				}
-				
 			});
 		});
 

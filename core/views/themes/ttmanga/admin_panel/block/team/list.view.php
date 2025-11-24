@@ -88,9 +88,9 @@ else if($success)
             <td class="nowrap">
                 <i class="fas fa-hdd"></i> <?=_echo($team['config_name']);?>
             </td>
-            <td class="nowrap align-center"><i class="fad fa-users"></i> <?=$team['total_members'];?></td>
-            <td class="nowrap align-center"><?=$team['total_mangas'];?></td>
-            <td class="nowrap align-center"><?=$team['total_chapters'];?></td>
+            <td class="nowrap align-center"><i class="fad fa-users"></i> <?=number_format($team['total_members'], 0, ',', '.');?></td>
+            <td class="nowrap align-center"><?=number_format($team['total_mangas'], 0, ',', '.');?></td>
+            <td class="nowrap align-center"><?=number_format($team['total_chapters'], 0, ',', '.');?></td>
         </tr>
     <?php endforeach; ?>
             </tbody>

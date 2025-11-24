@@ -24,6 +24,9 @@ class toolLeechController {
 	public const REFERER_CMANGA = 6;
 	public const REFERER_MINOTRUYEN = 7;
 	public const REFERER_TRUYENQQCOMVN = 8;
+	public const REFERER_OTAKUSIC = 9;
+
+	private const COOKIE_OTAKUSIC = 'PHPSESSID=24e5673774f9c651557b4dc0763ed930;otakusic_amme=17185';
 
 
 	private static function result($code, $message = null, $data = null)
@@ -88,10 +91,9 @@ class toolLeechController {
 			return 'https://hangtruyen.top/';
 		}
 
-		if(preg_match('#^https?://(?:.*?\.)?(cmanga|mideman)\.(?:.*?)/#', $link)) {
-			return 'https://cmangax7.com/';
+		if(preg_match('#^https?://(?:.*?\.)?otruyencdn\.(?:.*?)/#', $link)) {
+			return 'https://otakusic.com/';
 		}
-
 	} 
 
 	private static function getHtmlContainer($html, $xpath) {
@@ -104,12 +106,14 @@ class toolLeechController {
 		return $nodes->length > 0 ? $dom->saveHTML($nodes[0]) : '';
 	}
 
-	public static function curl_get_content($url, $referer = null, $cookie = false, $txtCookie = null) {
+	public static function curl_get_content($url, $referer = null, $txtCookie = null, $cookie = false) {
 
 		if($url == '') {
 			return false;
 		}
 			
+		$url = str_replace(' ', '%20', $url);
+
 		if (!$referer) {
 			$referer = preg_replace("#^(.*?)\.(.*?)/(.*?)$#si", "$1.$2/", $url);
 			$referer = preg_replace("#^(.*?)\://(.*?)\.(.*?)\.(.*?)/$#si", "$1://$3.$4/", $referer);			
@@ -328,7 +332,7 @@ class toolLeechController {
 
 
 		//hangtruyen
-		else if(preg_match('#^https?://(?:.*?\.)?(?:hangtruyen|hangtruyen\w{2})\.(?:.*?)/truyen-tranh/(?:[^/]+)/chapter-([0-9]+)$#', $link)) {
+		else if(preg_match('#^https?://(?:.*?\.)?(?:hangtruyen|hangtruyen\w{2})\.(?:.*?)/truyen-tranh/(?:[^/]+)/chapter-([0-9]+(?:-[0-9]+)?)$#', $link)) {
 			$html = self::curl_get_content($link);
 			preg_match('#const chapterDetail = \{(.*)\};#si', $html, $m);
 			$data = [];
@@ -354,7 +358,7 @@ class toolLeechController {
 		}
 
 		//minotruyen
-		else if(preg_match('#^https?://(?:.*?\.)?(?:minotruyen|minotruyen\w{2})\.(?:.*?)/manga/truyen/(?:[^/]+)/chapter(?:.*)-([0-9]+)$#', $link)) {
+		else if(preg_match('#^https?://(?:.*?\.)?(?:minotruyen|minotruyen\w{2})\.(?:.*?)/manga/truyen/(?:[^/]+)/chapter(?:.*)$#', $link)) {
 			$html = self::curl_get_content($link);
 			preg_match('#<script src="/_next/static/chunks/app/[^/]+/.+?/layout-([^.]+)\.js" async=""></script>#si', $html, $m);
 			if (!empty($m[1])) {
@@ -363,8 +367,12 @@ class toolLeechController {
 				preg_match('#NEXT_PUBLIC_SECRET_DATA_CHAPTER\:"([^"]+)"#si', $layout_js, $m);
 				$secret_key = isset($m[1]) ? $m[1] : null;
 				if ($secret_key) {
-					preg_match('#self\.__next_f\.push\(\[(?:[0-9]),"(?:[^\:]+):([^"]{500,})"\]\)</script>#si', $html, $m);
+					preg_match('#self\.__next_f\.push\(\[(?:[0-9]),\s*"(?:[^\:]+):([^"]{500,})"\]\)</script>#si', $html, $m);
 					$encrypted = isset($m[1]) ? $m[1] : null;
+					if ($encrypted == $secret_key || !$encrypted) {
+						preg_match('#self\.__next_f\.push\(\[\d+,\s*".*?\\\\?"servers\\\\?":\\\\"[^:]+:([^"]+)\\"#si', $html, $m);
+						$encrypted = isset($m[1]) ? $m[1] : null;
+					}
 					if ($encrypted) {
 						$decrypted = self::decryptoMinoTruyen($secret_key, $encrypted);
 						if (!$decrypted) {
@@ -387,6 +395,28 @@ class toolLeechController {
 					'code' => 429,
 					'message' => 'Có lỗi xảy ra. Vui lòng thử lại sau ít phút', #edit_lang
 					'data' => null
+				];
+			}
+		}
+
+
+		//otakusic
+		else if(preg_match('#^https?://(?:.*?\.)?otakusic\.(?:.*?)/doc-truyen/(?:[^/]+)/(.*?)$#', $link)) {
+			$html = self::getHtmlContainer(self::curl_get_content($link, null, self::COOKIE_OTAKUSIC), "//div[@id='image-wrapper']");
+			preg_match_all('#<img[^>]+src="([^"]+)"#i', $html, $m);
+			if (empty($m[1])) {
+				$response = [
+					'code' => 429,
+					'message' => 'Có lỗi xảy ra. Vui lòng thử lại sau ít phút', #edit_lang
+					'data' => null
+				];
+			} else {
+				$response = [
+					'code' => 200,
+					'message' => self::REFERER_OTAKUSIC,
+					'data' => array_values(array_filter($m[1], function($v) {
+						return preg_match('/^https?:\/\//', $v);
+					}))
 				];
 			}
 		}
@@ -634,6 +664,40 @@ class toolLeechController {
 					$response = [
 						'code' => 200,
 						'message' => self::REFERER_MANGADEX,
+						'data' => $data
+					];
+				}
+			}
+		}
+
+		//otakusic
+		else if(preg_match('#^https?://(?:.*?\.)?otakusic\.(?:.*?)/chi-tiet/([^/]+)$#', $link, $m)) {
+			$id_manga = isset($m[1]) ? $m[1] : 0;
+			if ($id_manga) {
+				
+				$fetch = self::curl_get_content('https://otakusic.com/api/manga/chapter/?manga_slug='.$id_manga);
+				$json = json_decode($fetch, true);
+
+				$data = [];
+				if (!empty($json['chapters'])) {
+					foreach($json['chapters'] as $o) {
+						$data[] = [
+							'name' => 'Chapter '.$o['chapter_name'],
+							'link' => 'https://otakusic.com/doc-truyen/'.$id_manga.'/chuong-'.$o['chapter_slug']
+						];
+					}
+				}
+
+				if (!$data) {
+					$response = [
+						'code' => 429,
+						'message' => 'Có lỗi xảy ra. Vui lòng thử lại sau ít phút', #edit_lang
+						'data' => null
+					];
+				} else {
+					$response = [
+						'code' => 200,
+						'message' => self::REFERER_OTAKUSIC,
 						'data' => $data
 					];
 				}

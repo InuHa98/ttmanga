@@ -19,6 +19,7 @@ class App {
 	private const FORMAT_MODEL_FILE = '%sModel';
 	public const COOKIE_VIEW_MODE = '_viewMode';
 	public const COOKIE_READ_MODE = '_readMode';
+	public const COOKIE_PADDING_MODE = '_paddingMode';
 	public const COOKIE_WARNING = '_warning';
 
 	public const PROFILE_UPLOAD_MODE_LOCALHOST = 'localhost';
@@ -162,6 +163,11 @@ class App {
 	public static function read_mode()
 	{
 		return Request::cookie(self::COOKIE_READ_MODE, null);
+	}
+
+	public static function padding_mode()
+	{
+		return Request::cookie(self::COOKIE_PADDING_MODE, null);
 	}
 
 	public function load_router_web($path = null)

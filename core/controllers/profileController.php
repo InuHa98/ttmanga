@@ -72,6 +72,7 @@ class profileController implements Interface_controller {
 	}
 
 
+	const BLOCK_COMMENTS = 'comments';
 	const BLOCK_MANGA_UPLOAD = 'manga-upload';
 	const BLOCK_MANGA_JOIN = 'manga-join';
 
@@ -92,9 +93,12 @@ class profileController implements Interface_controller {
 			case self::BLOCK_MANGA_JOIN:
 				$block_view = self::block_manga_join($user);
 				break;
+			case self::BLOCK_MANGA_UPLOAD:
+				$block_view = self::block_manga_upload($user);
+				break;
 			default:
-				$block = self::BLOCK_MANGA_UPLOAD;
-				$block_view =self::block_manga_upload($user);
+				$block = self::BLOCK_COMMENTS;
+				$block_view =self::block_comments($user);
 				break;
 		}
 

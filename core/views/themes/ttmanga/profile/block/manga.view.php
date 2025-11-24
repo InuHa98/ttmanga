@@ -76,14 +76,14 @@
     </ul>
 </div>
 
+<div class="pagination">
+	<?=html_pagination($pagination);?>
+</div>
 
 <?php else: ?>
     <div class="alert alert--warning">Chưa có truyện nào!</div>
 <?php endif; ?>
 
-<div class="pagination">
-	<?=html_pagination($pagination);?>
-</div>
 
 <script type="text/javascript">
     $(document).ready(function() {

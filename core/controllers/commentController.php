@@ -1,6 +1,5 @@
 <?php
 
-
 class commentController {
 
 	private function check_access_login()
@@ -19,6 +18,21 @@ class commentController {
 			echo json_api(403, 'Bạn đã bị cấm sử dụng chức năng bình luận'); #edit_lang
 			exit;
 		}
+	}
+
+	public function all()
+	{
+		$title = 'Tất cả bình luận - '.env('APP_NAME'); #edit_lang
+		$count = Comment::count();
+        new Pagination($count, App::$pagination_limit);
+		$pagination = Pagination::get();
+
+        $lst_comment = Comment::list([
+            'LIMIT' => [
+                $pagination['start'], $pagination['limit']
+            ]
+        ]);
+		return View::render_theme('comment.index', compact('title', 'count', 'lst_comment', 'pagination'));
 	}
 
 	public function list()
@@ -142,9 +156,10 @@ class commentController {
 					]);
 				}
 			}
+
+			$ids_user_tag = [];
 			preg_match_all('#\[tag=([0-9]+)\]@([^[]+)\[/tag\]#is', $text, $m);
 			if (isset($m[1])) {
-				$ids_user_tag = [];
 				foreach($m[1] as $user_id) {
 					if (isset($comment) && $comment['user_id'] == $user_id) {
 						continue;
@@ -163,6 +178,22 @@ class commentController {
 				]);
 			}
 
+			if (isset($comment)) {
+				$lst_reply = Comment::select(['user_id'])::list(['refid' => $comment['refid'], 'user_id[!]' => array_merge($ids_user_tag, [Auth::$data['id']])]);
+				if ($lst_reply) {
+					Notification::create([
+						'user_id' => array_column($lst_reply, 'user_id'),
+						'from_user_id' => Auth::$data['id'],
+						'type' => Notification::TYPE_COMMENT_COMMENT,
+						'data' => [
+							'manga_id' => $manga['id'],
+							'chapter_id' => $chapter_id,
+							'comment_id' => $comment['id'] ?? Comment::$insert_id
+						]
+					]);
+				}
+			}
+			
 			echo json_api(200, 'Successfully'); #edit_lang
 			exit;
 		}

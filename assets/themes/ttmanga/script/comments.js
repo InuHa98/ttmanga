@@ -1064,6 +1064,10 @@ function Comment(options = {}) {
       container.html("");
       $(this).parent().removeClass(class_reverse_replies);
       $(this).hide();
+      $("." + class_comment_item)
+        .find("form")
+        .remove();
+      $("." + class_comment_wrapper).removeClass(class_reply_focus);
       show_replies.show();
     });
 

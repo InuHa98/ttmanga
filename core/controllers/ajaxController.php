@@ -14,7 +14,7 @@ class ajaxController
 	public const UPLOAD_IMAGE = 'upload-image';
 	public const CHECK_IMAGE_CHAPTER = 'check-image-chapter';
 	public const TYPE_ALLOW_UPLOAD_IMAGE = ['image/jpeg', 'image/jpg', 'image/png'];
-	public const MAX_SIZE_UPLOAD_IMAGE = 5242880;
+	public const MAX_SIZE_UPLOAD_IMAGE = 8388608;
 
 	public function __construct($name = null, $action = null)
 	{

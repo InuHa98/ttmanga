@@ -30,7 +30,7 @@ class mangaController {
 	public const INPUT_STATUS = 'status';
 
 
-	public static function encodeImageURL($link){
+	public static function encodeImageURL($link, $fake_time = 0){
 		if (!env(DotEnv::ENCODE_URL_IMAGE)) {
 			return $link;
 		}
@@ -43,7 +43,7 @@ class mangaController {
 		}
 
 		if (isUrlGoogleImage($link)) {
-			$time = time() - 600;
+			$time = time() - $fake_time;
 			$currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
 			$currentUrl .= "://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 			$currentUrl = preg_replace("#^(.*)/([0-9]+)\?(.*?)$#","$1/$2", $currentUrl);
@@ -266,7 +266,8 @@ class mangaController {
 		])) : [];
 		$view_mode = App::view_mode();
 
-		return View::render_theme('manga.search', compact('title', 'count_filter', 'keyword', 'author_name', 'team_name', 'genres', 'status', 'count', 'manga_items', 'view_mode', 'pagination'));
+		$lst_genres = Genres::list();
+		return View::render_theme('manga.search', compact('title', 'lst_genres', 'count_filter', 'keyword', 'author_name', 'team_name', 'genres', 'status', 'count', 'manga_items', 'view_mode', 'pagination'));
 	}
 
 	public function search_ajax() {
@@ -453,10 +454,10 @@ class mangaController {
 
 		$uploader = [
 			'creator' => User::get($manga['user_upload']),
-			'uploader' => User::list([
+			'uploader' => $chapters ? User::list([
 				'id[!]' => $manga['user_upload'],
-				'id' => array_column($chapters, 'user_upload')
-			])
+				'id' => array_column($chapters, 'user_upload'),
+			]) : []
 		];
 
 		$chapters = Chapter::select(['id', 'name', 'created_at', 'download'])::list([
@@ -523,9 +524,14 @@ class mangaController {
 		$images = trim($chapter['image'].'');
 		$images = str_replace("\r", '', $images);
 		$images = array_filter(explode(Chapter::SEPARATOR, $images ?? ''));
+
 		$images = array_map(function($o) {
 			return env(DotEnv::ENCODE_URL_IMAGE, false) ? self::encodeImageURL($o) : $o;
 		}, $images);
+
+		foreach ($images as $index => $o) {
+			$images[$index] = env(DotEnv::ENCODE_URL_IMAGE, false) ? self::encodeImageURL($o, $index < 2 ? 0 : 600) : $o;
+		}
 
 		$team_name = Manga::get_team_name($manga);
 		
@@ -552,8 +558,11 @@ class mangaController {
 		]);
 
 		$read_mode = App::read_mode();
+		$padding_mode = App::padding_mode();
 
-		return View::render_theme('manga.chapter', compact('title', 'manga', 'chapter', 'uploader', 'images', 'team_name', 'other_teams', 'list_chapters', 'next_chapter', 'pre_chapter', 'read_mode'));
+		$current_time = time();
+
+		return View::render_theme('manga.chapter', compact('title', 'manga', 'chapter', 'uploader', 'images', 'team_name', 'other_teams', 'list_chapters', 'next_chapter', 'pre_chapter', 'read_mode', 'padding_mode', 'current_time'));
 
 	}
 

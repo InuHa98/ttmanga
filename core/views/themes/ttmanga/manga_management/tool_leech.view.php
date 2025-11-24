@@ -33,7 +33,7 @@
                 <div class="form-control">
                     <input class="form-input" placeholder="https://" id="link">
                     <button type="button" class="btn" id="btn-get-chapter">Get list chapter</button>
-                    <div class="label-desc">Hiện tại chức năng chỉ hỗ trợ: foxtruyen, truyenqq, mto, hangtruyen, mangadex, minotruyen</div>
+                    <div class="label-desc">Hiện tại chức năng chỉ hỗ trợ: foxtruyen, truyenqq, mto, hangtruyen, mangadex, minotruyen, otakusic</div>
                 </div>
             </div>
 

@@ -398,7 +398,6 @@ li {
 .user-role {
   display: inline-block;
   font-size: 0.9rem;
-  line-height: 0.9rem;
   background: #b7bac6;
   color: #fff;
   text-align: center;
@@ -853,14 +852,15 @@ li {
   background: #303030;
 }
 .side-nav-menu__items-link a {
-  display: block;
+  display: flex;
+  justify-content: space-between;
   color: var(--txt-color);
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding: 10px;
   padding-left: 35px;
   padding-right: 15px;
 }
 .side-nav-menu__items-link a i {
+  width: 13px;
   margin-right: 10px;
 }
 .side-nav-menu__items-group__title {
@@ -952,6 +952,9 @@ li {
   background: #222;
   width: 100%;
 }
+.show-side-nav .section-header__button .count-new-item {
+  display: none;
+}
 .show-side-nav .section-header__button i::before {
   content: "\f053";
 }
@@ -1032,8 +1035,22 @@ li {
   position: relative;
   z-index: 999999999;
 }
+.section-header__button .count-new-item {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50px;
+  min-width: 23px;
+  height: 23px;
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+  border: 3px solid #222;
+}
 .section-header__button:hover {
   background: #444444;
+}
+.section-header__button:hover .count-new-item {
+  border-color: #444;
 }
 @media screen and (max-width: 468px) {
   .section-header__button:hover {
@@ -1371,7 +1388,8 @@ li {
   margin: 0 10px;
 }
 .section-header__auth-infomation .auth-menu li a {
-  display: block;
+  display: flex;
+  justify-content: space-between;
   padding: 10px 20px;
 }
 .section-header__auth-infomation .auth-menu li:hover {
@@ -1738,8 +1756,8 @@ li {
   line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  font-size: 2rem;
-  line-height: 2rem;
+  font-size: 1.8rem;
+  line-height: 1.8rem;
   letter-spacing: -2px;
   margin-bottom: 10px;
   max-height: 90px;
@@ -3299,7 +3317,7 @@ ul.sort-chapter-box li .name {
   align-items: center;
   justify-content: center;
   width: 200px;
-  max-width: 200px;
+  max-width: 100%;
   min-height: 200px;
   margin: 0 auto;
   overflow: hidden;
@@ -5251,7 +5269,10 @@ table td.table__empty {
   font-size: 1rem;
 }
 .section-comment .comment-container .comment-wrapper__body-text .text {
-  display: inline-block;
+  display: inline-flex;
+  align-items: end;
+  flex-flow: wrap;
+  gap: 5px;
   margin-top: 10px;
   padding: 10px 20px;
   background: #f8f9fa;
@@ -5281,7 +5302,6 @@ table td.table__empty {
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 0.9rem;
-  line-height: 0.9rem;
 }
 .section-comment .comment-container .comment-wrapper__footer .reply {
   cursor: pointer;

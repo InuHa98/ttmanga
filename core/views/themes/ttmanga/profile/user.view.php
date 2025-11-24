@@ -25,7 +25,7 @@
 			<div class="section-profile-infomation__info-right">
 			<?php if(Auth::$isLogin == true): ?>
 				<a class="send-message" href="<?=RouteMap::get('messenger', ['block' => 'new', 'id' => $user['id']]);?>">
-					<i class="far fa-envelope"></i>
+					<i class="fas fa-envelope"></i>
 					<span> Gửi tin nhắn</span>
 				</a>
 			<?php endif; ?>
@@ -135,6 +135,9 @@
 			<div class="box">
 				<div class="box__header">
 					<div class="tabmenu-horizontal">
+						<div class="tabmenu-horizontal__item <?=($block == profileController::BLOCK_COMMENTS ? 'active' : null);?>">
+							<a href="<?=RouteMap::join('/'.profileController::BLOCK_COMMENTS, 'profile', ['id' => $user['id']]);?>">Bình luận</a>
+						</div>
 						<div class="tabmenu-horizontal__item <?=($block == profileController::BLOCK_MANGA_UPLOAD ? 'active' : null);?>">
 							<a href="<?=RouteMap::join('/'.profileController::BLOCK_MANGA_UPLOAD, 'profile', ['id' => $user['id']]);?>">Truyện đã đăng</a>
 						</div>

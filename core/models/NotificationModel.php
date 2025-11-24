@@ -58,6 +58,7 @@ class Notification extends Model {
 	public const TYPE_ADD_TEAM_PARTNER = 22;
 	public const TYPE_REMOVE_TEAM_PARTNER = 23;
 	public const TYPE_COMMENT_TAG = 24;
+	public const TYPE_COMMENT_COMMENT = 25;
 
 	public static function renderHTML($notification = [], $strip_tags = false)
 	{
@@ -108,6 +109,12 @@ class Notification extends Model {
 				$query = [InterFaceRequest::COMMENT => $data['comment_id']];
 				$url_comment = $data['chapter_id'] ? RouteMap::build_query($query, 'chapter', ['id_manga' => $data['manga_id'], 'id_chapter' => $data['chapter_id']]) : RouteMap::build_query($query, 'manga', ['id' => $data['manga_id']]);
 				$html = 'Vừa nhắc đến bạn trong 1 <a href="'.$url_comment.'"><b>bình luận</b></a>.';
+				break;
+
+			case self::TYPE_COMMENT_COMMENT:
+				$query = [InterFaceRequest::COMMENT => $data['comment_id']];
+				$url_comment = $data['chapter_id'] ? RouteMap::build_query($query, 'chapter', ['id_manga' => $data['manga_id'], 'id_chapter' => $data['chapter_id']]) : RouteMap::build_query($query, 'manga', ['id' => $data['manga_id']]);
+				$html = 'Vừa bình luận trong 1 <a href="'.$url_comment.'"><b>bình luận</b> mà bạn đã trả lời</a>.';
 				break;
 
 			case self::TYPE_CHANGE_USERNAME:

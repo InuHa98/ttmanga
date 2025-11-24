@@ -127,6 +127,7 @@ class Auth {
 		self::$data = $dataUser;
 		self::$isLogin = true;
 		self::$data['settings'] = json_decode($dataUser['settings'], true);
+		self::$limit_device = $dataUser['limit_device'];
 		//self::$permissions = UserPermission::get();
 		return true;
     }
@@ -163,10 +164,8 @@ class Auth {
 
 			if(self::$limit_device !== false && self::$data['limit_device'] != self::UNLIMITED_DEVICE)
 			{
-				
 				if(self::$data['limit_device'] >= 2)
 				{
-
 					$limit_device = max(1, self::$data['limit_device']);
 					$current_auth_session = explode("\n", trim(self::$data['auth_session'].''));	
 					$current_auth_session = array_slice($current_auth_session, -($limit_device + 1), $limit_device - 1);
