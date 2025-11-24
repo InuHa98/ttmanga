@@ -258,6 +258,7 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 <script type="text/javascript" src="<?=APP_URL;?>/assets/script/wasm_exec.js"></script>
 <script type="text/javascript">
 
+	const MAX_RETRY = 10;
 	const go = new Go();
 	(async () => {
 		const result = await WebAssembly.instantiateStreaming(fetch("<?=APP_URL;?>/assets/wasm/anti_ADBlock.wasm"), go.importObject);
@@ -317,7 +318,7 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 
 			var srcImage = $(this).attr('src');
 			let retry = $(this).data('retry') || 0;
-			if (retry == 0) {
+			if (retry < MAX_RETRY) {
 				$(this).attr('src', window.trim(srcImage)).data('retry', ++retry);
 			}
 
@@ -415,7 +416,7 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 			$(this).addClass('error');
 			icon_loading.hide();
 			let retry = $(this).data('retry') || 0;
-			if (retry == 0) {
+			if (retry < MAX_RETRY) {
 				$(this).attr('src', window.trim($(this).attr('src'))).data('retry', ++retry);
 			}
 		}
@@ -480,7 +481,7 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 				}).on('error', function() {
 					$(this).addClass('error');
 					let retry = $(this).data('retry') || 0;
-					if (retry == 0) {
+					if (retry < MAX_RETRY) {
 						$(this).attr('src', window.trim($(this).attr('src'))).data('retry', ++retry);
 					}
 				}).attr('src', window.trim(src));
