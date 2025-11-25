@@ -103,25 +103,6 @@ Router::get(RouteMap::ROUTES['comments'], function() {
 	return Controller::load('commentController@all');
 });
 
-Router::group(RouteMap::ROUTES['comment'], function() {
-
-	Router::get('/', function() {
-		return Controller::load('commentController@list');
-	});
-
-	Router::post('/', function() {
-		return Controller::load('commentController@insert');
-	});
-
-	Router::put('/', function() {
-		return Controller::load('commentController@update');
-	});
-
-	Router::delete('/', function() {
-		return Controller::load('commentController@delete');
-	});
-});
-
 
 ####### Admin-Panel #######
 Router::match(['GET', 'POST'], RouteMap::ROUTES['admin_panel'], function($group, $block = null, $action = null) {

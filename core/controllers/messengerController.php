@@ -56,8 +56,6 @@ class messengerController {
 		}
 	}
 
-
-
 	public function new($user_id = null)
 	{
 		$data_view = [
@@ -120,7 +118,6 @@ class messengerController {
 
 		return View::render_theme('messenger.new', $data_view);
 	}
-
 
 	public function inbox($id = null, $is_spam = false)
 	{
@@ -197,74 +194,12 @@ class messengerController {
 		$user_to = User::get(Auth::$id == $chat['to_user_id'] ? $chat['from_user_id'] : $chat['to_user_id']);
 		$count = Messenger::count_message_chat($chat);
 
-		$page = Request::post('page', null);
-		if($page)
-		{
-			$page = abs(intval($page));
-			$data_messages = [];
-			if($count > 0)
-			{
-				$messages = Messenger::list_messages_chat($chat, $count, $page);
-				if(!$messages)
-				{
-					echo json_api(404, 'not found item', $data_messages); #edit_lang
-					exit;
-				}
-
-				Messenger::seen($chat);
-				$last_seen = Messenger::last_seen($chat);
-	
-				$i = 0;
-				$old_time = Request::post('old_time', 0);
-				$old_user_id = Request::post('old_user_id', null);
-				$is_last_seen = false;
-				foreach ($messages as $msg) {
-	
-					$data = [
-						'is_reply' => false,
-						'is_last_seen' => false,
-						'message' => _echo($msg['text'], true, true),
-						'seen' => _time($msg['seen']),
-						'time' => _time($msg['time']),
-						'break_time' =>  (($msg['time'] - $old_time) > 60 * self::TIME_BREAK_LINE) ? true : false,
-						'old_time' => $msg['time'],
-						'old_user_id' => $msg['from_user_id']
-					];
-	
-					$data['break_line'] = $data['break_time'] == false && $old_user_id != null && $msg['from_user_id'] != $old_user_id ? true : false;
-	
-					if($msg['to_user_id'] != Auth::$id)
-					{
-						$data['is_reply'] = true;
-						if($msg['seen'] && $msg['seen'] > 0 && $last_seen['id'] === $msg['id'])
-						{
-							$data['is_last_seen'] = true;	
-							$is_last_seen = true;			
-						}
-					} else {
-						if($is_last_seen == true)
-						{
-							$data_messages[$i - 1]['is_last_seen'] = false;
-						}
-					}
-					$data_messages[$i] = $data;
-					$old_time = $msg['time'];
-					$old_user_id = $msg['from_user_id'];
-					$i++;
-				}			
-			}
-			echo json_api(200, count($data_messages).' items', $data_messages); #edit_lang
-			exit;
-		}
-
-
 		$title = 'Messenger - '.$user_to['username']; #edit_lang
 		$is_spam = in_array(Auth::$id, [$chat['is_spam_to'], $chat['is_spam_from']]);
 		
 		$error = null;
 		$success = null;
 
-        
         if(Security::validate() == true)
         {
 			$form_action = Request::post(self::NAME_FORM_ACTION, null);
@@ -331,7 +266,76 @@ class messengerController {
 			View::addData('_count_message', Messenger::count_new_inbox());			
 		}
 
-		return View::render_theme('messenger.chat', compact('title', 'error', 'success', 'user_to', 'is_spam', 'count'));
+		return View::render_theme('messenger.chat', compact('title', 'error', 'success', 'chat', 'user_to', 'is_spam', 'count'));
+	}
+
+	public static function loadMessage() {
+		$id = intval(Request::post(InterFaceRequest::ID, 0));
+		$chat = Messenger::get_chat($id);
+		if(!$chat)
+		{
+			echo json_api(404, 'not found item'); #edit_lang
+			return;
+		}
+
+		$count = Messenger::count_message_chat($chat);
+
+		$page = Request::post('page', null);
+
+		$page = abs(intval($page));
+		$data_messages = [];
+		if($count > 0)
+		{
+			$messages = Messenger::list_messages_chat($chat, $count, $page);
+			if(!$messages)
+			{
+				echo json_api(404, 'not found item', $data_messages); #edit_lang
+				return;
+			}
+
+			Messenger::seen($chat);
+			$last_seen = Messenger::last_seen($chat);
+
+			$i = 0;
+			$old_time = Request::post('old_time', 0);
+			$old_user_id = Request::post('old_user_id', null);
+			$is_last_seen = false;
+			foreach ($messages as $msg) {
+
+				$data = [
+					'is_reply' => false,
+					'is_last_seen' => false,
+					'message' => _echo($msg['text'], true, true),
+					'seen' => _time($msg['seen']),
+					'time' => _time($msg['time']),
+					'break_time' =>  (($msg['time'] - $old_time) > 60 * self::TIME_BREAK_LINE) ? true : false,
+					'old_time' => $msg['time'],
+					'old_user_id' => $msg['from_user_id']
+				];
+
+				$data['break_line'] = $data['break_time'] == false && $old_user_id != null && $msg['from_user_id'] != $old_user_id ? true : false;
+
+				if($msg['to_user_id'] != Auth::$id)
+				{
+					$data['is_reply'] = true;
+					if($msg['seen'] && $msg['seen'] > 0 && $last_seen['id'] === $msg['id'])
+					{
+						$data['is_last_seen'] = true;	
+						$is_last_seen = true;			
+					}
+				} else {
+					if($is_last_seen == true)
+					{
+						$data_messages[$i - 1]['is_last_seen'] = false;
+					}
+				}
+				$data_messages[$i] = $data;
+				$old_time = $msg['time'];
+				$old_user_id = $msg['from_user_id'];
+				$i++;
+			}			
+		}
+		echo json_api(200, count($data_messages).' items', $data_messages); #edit_lang
 	}
 
 	public static function insertHiddenAction($action_name)

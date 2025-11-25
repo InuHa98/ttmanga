@@ -114,7 +114,7 @@ class Notification extends Model {
 			case self::TYPE_COMMENT_COMMENT:
 				$query = [InterFaceRequest::COMMENT => $data['comment_id']];
 				$url_comment = $data['chapter_id'] ? RouteMap::build_query($query, 'chapter', ['id_manga' => $data['manga_id'], 'id_chapter' => $data['chapter_id']]) : RouteMap::build_query($query, 'manga', ['id' => $data['manga_id']]);
-				$html = 'Vừa bình luận trong 1 <a href="'.$url_comment.'"><b>bình luận</b> mà bạn đã trả lời</a>.';
+				$html = 'Vừa bình luận trong 1 <a href="'.$url_comment.'"><b>bình luận</b></a> mà bạn đã trả lời.';
 				break;
 
 			case self::TYPE_CHANGE_USERNAME:

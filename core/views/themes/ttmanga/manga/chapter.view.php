@@ -258,34 +258,108 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 <script type="text/javascript" src="<?=APP_URL;?>/assets/script/wasm_exec.js"></script>
 <script type="text/javascript">
 
+	window.__time_delta = <?=$current_time;?> * 1000 -  Date.now();
+	let background = null;
+	let icon_loading = $('#icon_loading');
+	let class_select_page = '.select-page',
+		class_select_chapter = '.select-chapter',
+		class_select_team = '.select-team',
+		select_padding_mode = '#select-padding-mode',
+		select_read_mode = '#select-read-mode';
+
+
+	new Comment({
+		manga_id: <?=$manga['id'];?>,
+		chapter_id: <?=$chapter['id'];?>,
+		comment_id: <?=Request::get(InterFaceRequest::COMMENT, 0);?>,
+		ajax_url: "<?=appendUrlApi(RouteMap::get('comment'));?>",
+		editor_theme: 'ttmanga',
+		meme_sources: <?=Smiley::build_meme_source();?>,
+		taguser: {
+			api_url: '<?=appendUrlApi(RouteMap::get('ajax', ['name' => ajaxController::SEARCH_USER]));?>',
+			delimiter: '@'
+		}
+	});
+
+	$(select_read_mode).on('change', function() {
+		document.cookie = "<?=App::COOKIE_READ_MODE;?>=" + ($(this).is(':checked') ? 1 : 0) + "; expires=Thu, 2 Aug <?=(date('Y') + 10);?> 20:47:11 UTC;path=/";
+		window.location.reload();
+	});
+
+	$(select_padding_mode).on('change', function() {
+		document.cookie = "<?=App::COOKIE_PADDING_MODE;?>=" + ($(this).is(':checked') ? 1 : 0) + "; expires=Thu, 2 Aug <?=(date('Y') + 10);?> 20:47:11 UTC;path=/";
+		window.location.reload();
+	});
+
+	$(class_select_chapter).on('change', function() {
+		location.href = $(this).val();
+	});
+	
+	$(class_select_team).on('change', function() {
+		if ($(this).val() != 0) {
+			location.href = $(this).val();
+		}
+	});
+
+	$('.show-chapter-list, .hide-chapter-list').on('click', function() {
+		
+		const chapter_list = $('.chapter-list');
+		chapter_list.toggleClass('show');
+
+		
+		if(chapter_list.hasClass('show')) {
+			const active_chapter = chapter_list.find(".chapter-list__items > li.active");
+			active_chapter.length && active_chapter[0].scrollIntoView({ behavior: "smooth", block: "center" });
+			background = $('<div style="background: #fff; opacity: 0; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 999; transition: 1s opacity ease-in-out;"></div>');
+			$('body').append(background);
+			background.css({
+				opacity: 0.4
+			});
+			background.on('click', () => {
+				$(this).click();
+			});
+		} else {
+			background.remove();
+		}
+	});
+
+	$('.sort-list').on('click', function() {
+		if($(this).hasClass('asc'))
+		{
+			$(this).removeClass('asc').addClass('desc');
+		}
+		else
+		{
+			$(this).removeClass('desc').addClass('asc');
+		}
+		$('.chapter-list').find('ul').toggleClass('reverse');
+		const active_chapter = $('.chapter-list').find(".chapter-list__items > li.active");
+		active_chapter.length && active_chapter[0].scrollIntoView({ behavior: "smooth", block: "center" });
+	});
+
+	$('.chapter-list__items').find('li').each(function() {
+		var id = $(this).data('id'),
+			name = htmlEntities($(this).html()),
+			isActive = $(this).hasClass('active');
+		if(id)
+		{
+			$(class_select_chapter).append('<option value="'+id+'" '+(isActive ? 'selected' : '')+'>'+name+'</option>');
+		}
+	});
+
+	$('.chapter-list__items').on('click', 'li', function() {
+		if (!$(this).hasClass('active')) {
+			location.href = $(this).data('id');
+		}
+	});
+
+
 	const MAX_RETRY = 10;
 	const go = new Go();
-	(async () => {
-		const result = await WebAssembly.instantiateStreaming(fetch("<?=APP_URL;?>/assets/wasm/anti_ADBlock.wasm"), go.importObject);
-		go.run(result.instance);
 
+	const loadImages = () => {
 		var lstImages = <?=json_encode($images); ?>;
 		var lstImagesLoaded = new Array();
-
-		var icon_loading = $('#icon_loading');
-		var class_select_page = '.select-page',
-			class_select_chapter = '.select-chapter',
-			class_select_team = '.select-team',
-			select_padding_mode = '#select-padding-mode',
-			select_read_mode = '#select-read-mode';
-
-		new Comment({
-			manga_id: <?=$manga['id'];?>,
-			chapter_id: <?=$chapter['id'];?>,
-			comment_id: <?=Request::get(InterFaceRequest::COMMENT, 0);?>,
-			ajax_url: "<?=RouteMap::get('comment');?>",
-			editor_theme: 'ttmanga',
-			meme_sources: <?=Smiley::build_meme_source();?>,
-			taguser: {
-				api_url: '<?=appendUrlApi(RouteMap::get('ajax', ['name' => ajaxController::SEARCH_USER]));?>',
-				delimiter: '@'
-			}
-		});
 
 	<?php if($read_mode != 1): ?>
 
@@ -361,7 +435,6 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 		});
 
 	<?php else: ?>
-
 		var msg_error = $('.msg-error'),
 			current_image = $('#current_image'),
 			nxtImage,
@@ -370,7 +443,6 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 		function isNumber(n) {
 			return !isNaN(parseFloat(n)) && isFinite(n);
 		}
-
 
 		var currImage = 0;
 		var start = location.href.indexOf('#');
@@ -580,87 +652,19 @@ $url_next_chapter = $next_chapter ? RouteMap::get('chapter', ['id_manga' => $man
 		});
 
 	<?php endif; ?>
+	};
 
-		window.__time_delta = <?=$current_time;?> * 1000 -  Date.now();
-		$(document).ready(function() {
-
-			let background = null;
-
-			$(select_read_mode).on('change', function() {
-				document.cookie = "<?=App::COOKIE_READ_MODE;?>=" + ($(this).is(':checked') ? 1 : 0) + "; expires=Thu, 2 Aug <?=(date('Y') + 10);?> 20:47:11 UTC;path=/";
-				window.location.reload();
-			});
-
-			$(select_padding_mode).on('change', function() {
-				document.cookie = "<?=App::COOKIE_PADDING_MODE;?>=" + ($(this).is(':checked') ? 1 : 0) + "; expires=Thu, 2 Aug <?=(date('Y') + 10);?> 20:47:11 UTC;path=/";
-				window.location.reload();
-			});
-
-			$(class_select_chapter).on('change', function() {
-				location.href = $(this).val();
-			});
-			
-			$(class_select_team).on('change', function() {
-				if ($(this).val() != 0) {
-					location.href = $(this).val();
-				}
-			});
-
-			$('.show-chapter-list, .hide-chapter-list').on('click', function() {
-				
-				const chapter_list = $('.chapter-list');
-				chapter_list.toggleClass('show');
-
-				
-				if(chapter_list.hasClass('show')) {
-					const active_chapter = chapter_list.find(".chapter-list__items > li.active");
-					active_chapter.length && active_chapter[0].scrollIntoView({ behavior: "smooth", block: "center" });
-					background = $('<div style="background: #fff; opacity: 0; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 999; transition: 1s opacity ease-in-out;"></div>');
-					$('body').append(background);
-					background.css({
-						opacity: 0.4
-					});
-					background.on('click', () => {
-						$(this).click();
-					});
-				} else {
-					background.remove();
-				}
-			});
-
-			$('.sort-list').on('click', function() {
-				if($(this).hasClass('asc'))
-				{
-					$(this).removeClass('asc').addClass('desc');
-				}
-				else
-				{
-					$(this).removeClass('desc').addClass('asc');
-				}
-				$('.chapter-list').find('ul').toggleClass('reverse');
-				const active_chapter = $('.chapter-list').find(".chapter-list__items > li.active");
-				active_chapter.length && active_chapter[0].scrollIntoView({ behavior: "smooth", block: "center" });
-			});
-
-			$('.chapter-list__items').find('li').each(function() {
-				var id = $(this).data('id'),
-					name = htmlEntities($(this).html()),
-					isActive = $(this).hasClass('active');
-				if(id)
-				{
-					$(class_select_chapter).append('<option value="'+id+'" '+(isActive ? 'selected' : '')+'>'+name+'</option>');
-				}
-			});
-
-			$('.chapter-list__items').on('click', 'li', function() {
-				if (!$(this).hasClass('active')) {
-					location.href = $(this).data('id');
-				}
-			});
-		});
-
-
-	})();
+	fetch("<?=APP_URL;?>/assets/wasm/anti_ADBlock.wasm")
+		.then(res => res.arrayBuffer())
+		.then(bytes => WebAssembly.instantiate(bytes, go.importObject))
+		.then(result => {
+			go.run(result.instance);
+			loadImages();
+		})
+		.catch(err => $.toastShow('Không thể tải hình ảnh', {
+			type: 'error',
+			timeout: 3000
+		}));
 </script>
 
 <?php View::render_theme('layout.footer'); ?>

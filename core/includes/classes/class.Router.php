@@ -83,14 +83,17 @@ class Router {
 				$prefix   = isset($args[0]) ? $args[0] : null;
 				$callback = isset($args[1]) ? $args[1] : null;
 				$current_route = isset($args[2]) ? $args[2] : null;
-
+				
 				if(!($callback instanceof Closure))
 				{
 					return static::class;
 				}
 
 
-		  		self::$prefix = self::formatRoute($prefix);
+				if (self::$prefix) {
+					$prefix = self::$prefix.ltrim($prefix, '/');
+				}
+				self::$prefix = self::formatRoute($prefix);
 
 		  		$prefix_regex = self::makeRegexRoute(self::$prefix);
 				if(!preg_match("#^{$prefix_regex}#si", self::$uri))
@@ -107,6 +110,7 @@ class Router {
 				}
 
 		  		$args = self::fill_args($callback, $route_args, null);
+
 
 		  		call_user_func_array($callback, $args);
 
@@ -145,6 +149,7 @@ class Router {
 		$route = self::$prefix.self::formatRoute($route);
 
 		$route_regex = self::makeRegexRoute($route);
+
 		if(!preg_match("#^".$route_regex."$#si", self::$uri))
 		{
 			return static::class;

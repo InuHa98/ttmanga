@@ -339,7 +339,7 @@ $manga_cover = _echo($manga['cover']);
 		new Comment({
 			manga_id: <?=$manga['id'];?>,
 			comment_id: <?=Request::get(InterFaceRequest::COMMENT, 0);?>,
-			ajax_url: "<?=RouteMap::get('comment');?>",
+			ajax_url: "<?=appendUrlApi(RouteMap::get('comment'));?>",
 			editor_theme: 'ttmanga',
 			meme_sources: <?=Smiley::build_meme_source();?>,
 			taguser: {

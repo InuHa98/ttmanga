@@ -179,8 +179,11 @@ echo themeController::load_css('css/messenger.css');
 
                 $.ajax({
                     type: "POST",
-                    url: "",
-                    data: {page: current_page},
+                    url: "<?=appendUrlApi(RouteMap::get('messenger'));?>",
+                    data: {
+                        <?=InterFaceRequest::ID;?>: <?=$chat['id'];?>,
+                        page: current_page
+                    },
                     dataType: 'json',
                     cache: false,
                     success: function(response) {
