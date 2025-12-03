@@ -1,5 +1,10 @@
 <?php
 
+ignore_user_abort(false);
+if (session_status() === PHP_SESSION_ACTIVE) {
+	session_write_close();
+}
+
 $title = isset($title) ? _echo($title) : env(DotEnv::APP_TITLE);
 $description = isset($description) ? _echo($description) : null;
 $description_image = isset($description_image) ? _echo($description_image) : null;
